@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en-NG" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NAIJA CHRONICLES — Journal of Design, Geopolitics & Thought</title>
-  <meta name="description" content="A high-editorial news outlet and digital magazine covering contemporary architecture, frontier science, global trade, and slow craft across Nigeria and the world." />
+  
+  <!-- Primary SEO & Brand Metadata -->
+  <title>NAIJA CHRONICLES — Journal of Nigerian Politics, Wealth & Contemporary Thought</title>
+  <meta name="title" content="NAIJA CHRONICLES — Journal of Nigerian Politics, Wealth & Contemporary Thought" />
+  <meta name="description" content="High-signal Nigerian political intelligence, Dangote IPO & stock market breakdowns, hidden tariff wire investigations, and global mobility playbooks from Lagos, Nigeria." />
+  <meta name="keywords" content="Nigerian politics, Naija news, 2027 elections Nigeria, Dangote refinery IPO, NGX stocks, second passport Nigeria, electricity tariffs Band A, Lagos business news, Nigerian economy" />
+  <meta name="author" content="Naija Chronicles Editorial Bureau, Lagos" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <link rel="canonical" href="https://nigerian-chronicles.vercel.app/" />
+
+  <!-- Favicons & Touch Icons -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon.png" />
+  <link rel="alternate icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#121212" />
+
+  <!-- RSS News Syndication -->
+  <link rel="alternate" type="application/rss+xml" title="Naija Chronicles Morning Feed" href="feed.xml" />
+
+  <!-- Open Graph / Facebook / LinkedIn / WhatsApp Metadata -->
+  <meta property="og:type" content="news.website" />
+  <meta property="og:site_name" content="Naija Chronicles" />
+  <meta property="og:url" content="https://nigerian-chronicles.vercel.app/" />
+  <meta property="og:title" content="NAIJA CHRONICLES — Journal of Nigerian Politics, Wealth & Thought" />
+  <meta property="og:description" content="High-signal Nigerian political intelligence, stock breakdowns, hidden wire investigations, and global mobility playbooks from Lagos." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" />
+  <meta property="og:locale" content="en_NG" />
+
+  <!-- Twitter / X Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://nigerian-chronicles.vercel.app/" />
+  <meta name="twitter:title" content="NAIJA CHRONICLES — Journal of Nigerian Politics, Wealth & Thought" />
+  <meta name="twitter:description" content="Daily high-signal Nigerian political intelligence, stock breakdowns, hidden wire investigations, and global mobility playbooks." />
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85" />
+
+  <!-- Schema.org JSON-LD for Search Engines & AI Answer Engines (AEO) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "NewsMediaOrganization",
+        "@id": "https://nigerian-chronicles.vercel.app/#organization",
+        "name": "Naija Chronicles",
+        "url": "https://nigerian-chronicles.vercel.app",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://nigerian-chronicles.vercel.app/assets/images/favicon.png",
+          "width": 512,
+          "height": 512
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Victoria Island",
+          "addressRegion": "Lagos",
+          "addressCountry": "NG"
+        },
+        "knowsAbout": [
+          "Nigerian Politics and Governance",
+          "Macroeconomics and Monetary Policy",
+          "Nigerian Stock Exchange (NGX) and Equities",
+          "Energy, Crude Oil, and Refining Logistics",
+          "Global Mobility and Second Passports"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://nigerian-chronicles.vercel.app/#website",
+        "url": "https://nigerian-chronicles.vercel.app",
+        "name": "Naija Chronicles",
+        "publisher": { "@id": "https://nigerian-chronicles.vercel.app/#organization" },
+        "inLanguage": "en-NG",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://nigerian-chronicles.vercel.app/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -45,7 +126,7 @@
       <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
     </span>
     <div class="text-xs font-mono max-w-xs truncate">
-      <span class="text-stone-400 dark:text-stone-600">Reading:</span> <strong id="audio-bar-title" class="font-sans">The Architecture of Silence</strong>
+      <span class="text-stone-400 dark:text-stone-600">Reading:</span> <strong id="audio-bar-title" class="font-sans">The 2027 Coalition Arithmetic</strong>
     </div>
     <button onclick="stopArticleAudio()" class="text-xs font-mono uppercase tracking-wider px-3 py-1 bg-red-700 text-white rounded-full hover:bg-red-800 transition-colors">
       Stop Audio
@@ -57,97 +138,117 @@
     System Notification
   </div>
 
-  <!-- HEADER & MASTHEAD -->
+  <!-- HEADER & MASTHEAD (Zero-Overlap Responsive Structure) -->
   <header class="border-b border-stone-200 dark:border-stone-800 bg-[var(--bg-primary)]">
-    <!-- Top Metadata Bar -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-stone-200/60 dark:border-stone-800/60 py-2 flex flex-wrap items-center justify-between text-[11px] font-mono text-stone-500">
-      <div class="flex items-center gap-4">
+    
+    <!-- 1. Top Metadata Bar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-stone-200/60 dark:border-stone-800/60 py-2 flex flex-wrap items-center justify-between text-[11px] font-mono text-stone-500 gap-2">
+      <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
         <span>VOL. VIII • ISSUE NO. 142</span>
+        <span>•</span>
+        <span class="font-bold text-stone-700 dark:text-stone-300">BUREAU: LAGOS</span>
         <span class="hidden md:inline">•</span>
-        <span class="hidden md:inline">FRIDAY, SEPTEMBER 18, 2026</span>
-        <span class="hidden lg:inline">•</span>
-        <span class="hidden lg:inline">BUREAUS: LAGOS • ABUJA • LONDON • TOKYO</span>
+        <span class="hidden md:inline">VICTORIA ISLAND • IKOYI • YABA</span>
       </div>
 
-      <div class="flex items-center gap-4">
+      <div class="flex items-center gap-3">
         <div id="supabase-status-badge" class="cursor-pointer" onclick="openSupabaseModal()">
           <!-- Populated dynamically by JS -->
         </div>
 
         <!-- Theme Mode Switcher -->
         <div class="flex items-center border border-stone-200 dark:border-stone-800 rounded p-0.5 bg-stone-50 dark:bg-stone-900">
-          <button onclick="setTheme('light')" data-set-theme="light" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors" title="Gallery Ivory Theme">Ivory</button>
-          <button onclick="setTheme('sepia')" data-set-theme="sepia" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors" title="Archival Sepia Theme">Sepia</button>
-          <button onclick="setTheme('dark')" data-set-theme="dark" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors" title="Editorial Obsidian Theme">Dark</button>
+          <button onclick="setTheme('light')" data-set-theme="light" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors" title="Gallery Ivory">Ivory</button>
+          <button onclick="setTheme('sepia')" data-set-theme="sepia" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors" title="Archival Sepia">Sepia</button>
+          <button onclick="setTheme('dark')" data-set-theme="dark" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors" title="Obsidian Dark">Dark</button>
         </div>
       </div>
     </div>
 
-    <!-- Main Masthead Brand -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 text-center relative">
-      <div class="text-[11px] font-mono tracking-[0.3em] uppercase text-stone-500 mb-2">
-        An Independent Journal of Design, Geopolitics & Contemporary Thought
+    <!-- 2. Main Center Masthead -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 text-center">
+      <div class="text-[10px] sm:text-[11px] font-mono tracking-[0.3em] uppercase text-stone-500 mb-2">
+        An Independent Journal of Nigerian Politics, Wealth & Contemporary Thought
       </div>
       
-      <h1 class="font-masthead text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-stone-950 dark:text-stone-50 hover:opacity-90 transition-opacity">
-        <a href="#" onclick="selectCategory('all'); return false;">NAIJA CHRONICLES</a>
+      <h1 class="font-masthead text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-stone-950 dark:text-stone-50 hover:opacity-95 transition-opacity">
+        <a href="index.html">NAIJA CHRONICLES</a>
       </h1>
 
-      <div class="flex items-center justify-center gap-6 mt-3 text-xs font-body-serif italic text-stone-600 dark:text-stone-400">
-        <span>"Truth Through Scrutiny • Design Through Purpose • Heritage in Motion"</span>
-      </div>
-
-      <!-- Quick Action Controls -->
-      <div class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-3">
-        <a href="archive.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-sm">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Archive
-        </a>
-
-        <a href="community.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-bold uppercase tracking-wider bg-red-700 text-white hover:bg-red-800 transition-colors shadow-sm">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg> Community Wire
-        </a>
-
-        <button onclick="openPublishModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 hover:bg-neutral-800 transition-colors shadow-sm">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> Publish
-        </button>
-
-        <button onclick="openSupabaseModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors">
-          <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16"/></svg> Supabase
-        </button>
-
-        <button onclick="toggleBookmarksDrawer(true)" class="relative p-2 rounded border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors" title="View Saved Reading List">
-          <svg class="w-4 h-4 text-stone-700 dark:text-stone-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
-          <span id="bookmarks-count-badge" class="absolute -top-1 -right-1 bg-red-700 text-white text-[9px] font-mono w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-        </button>
+      <div class="flex items-center justify-center gap-4 mt-2 text-xs font-body-serif italic text-stone-600 dark:text-stone-400">
+        <span>"Truth Through Scrutiny • Design Through Purpose • Lagos Bureau"</span>
       </div>
     </div>
 
-    <!-- Live Market & Dispatch Ticker -->
-    <div class="border-t border-b border-stone-200 dark:border-stone-800 py-1.5 bg-stone-100/60 dark:bg-stone-900/60 ticker-wrap text-xs font-mono text-stone-600 dark:text-stone-400">
+    <!-- 3. Clean Responsive Navigation & Action Ribbon (No Overlaps) -->
+    <div class="border-t border-b border-stone-200 dark:border-stone-800 bg-stone-50/70 dark:bg-stone-900/70">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        
+        <!-- Primary Hub Links -->
+        <div class="flex items-center gap-2 overflow-x-auto scrollbar-none py-0.5">
+          <a href="index.html" class="inline-flex items-center gap-1 px-3 py-1 rounded text-xs font-mono font-bold uppercase tracking-wider bg-neutral-950 text-white dark:bg-stone-100 dark:text-neutral-900">
+            Front Page
+          </a>
+
+          <a href="community.html" class="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono font-bold uppercase tracking-wider bg-red-700 text-white hover:bg-red-800 transition-colors shadow-sm">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg> Community Wire
+          </a>
+
+          <a href="archive.html" class="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition-colors">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Weekly Archive
+          </a>
+
+          <a href="feed.xml" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono font-medium text-amber-700 dark:text-amber-400 hover:underline" title="Syndicated RSS Feed">
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05 0 10.96 4.91 10.96 10.96h4.812c0-8.71-7.062-15.771-15.772-15.771zm0-8.18v4.812c10.562 0 19.13 8.568 19.13 19.13h4.812c0-13.222-10.72-23.942-23.942-23.942z"/></svg> RSS
+          </a>
+        </div>
+
+        <!-- Utility Controls -->
+        <div class="flex items-center gap-2">
+          <button onclick="openPublishModal()" class="inline-flex items-center gap-1 px-3 py-1 rounded text-xs font-mono font-medium bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 hover:bg-stone-800 transition-colors shadow-sm">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> Publish
+          </button>
+
+          <button onclick="openSupabaseModal()" class="inline-flex items-center gap-1 px-2.5 py-1 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition-colors">
+            <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2 1.5 3 3.5 3h9c2 0 3.5-1 3.5-3V7M4 7c0-2 1.5-3 3.5-3h9c2 0 3.5 1 3.5 3M4 7h16"/></svg> Supabase
+          </button>
+
+          <button onclick="toggleBookmarksDrawer(true)" class="relative p-1.5 rounded border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors" title="Saved Reading List">
+            <svg class="w-4 h-4 text-stone-700 dark:text-stone-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+            <span id="bookmarks-count-badge" class="absolute -top-1 -right-1 bg-red-700 text-white text-[9px] font-mono w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 4. Live Market & Dispatch Ticker -->
+    <div class="border-b border-stone-200 dark:border-stone-800 py-1.5 bg-stone-100/60 dark:bg-stone-900/60 ticker-wrap text-xs font-mono text-stone-600 dark:text-stone-400">
       <div class="ticker-move">
-        <span class="mr-8"><strong>DISPATCH:</strong> West Africa Photonic & AI Research Hub opens in Yaba Technology Quarter</span>
+        <span class="mr-8"><strong>POLITICS:</strong> 2027 alliance consultations intensify as local govt direct accounts take effect</span>
         <span class="mr-8"><strong>MARKETS:</strong> NGX All-Share ▲ 104,280 (+0.8%) • BRENT CRUDE $78.20 • NGN/USD ₦1,590</span>
-        <span class="mr-8"><strong>ARCHITECTURE:</strong> Lekki Oceanfront Cultural Center shortlists 3 international pavilions</span>
-        <span class="mr-8"><strong>TRADE:</strong> Lekki Deep Sea Port records 32% quarter-on-quarter container throughput surge</span>
+        <span class="mr-8"><strong>STOCKS:</strong> Dangote Refinery prepares $20B public offer on the Nigerian Exchange</span>
+        <span class="mr-8"><strong>TECH:</strong> Nigerian data localisation mandate sparks hyperscale datacenter expansion in Lekki</span>
       </div>
     </div>
 
-    <!-- Category Nav Bar & Live Search -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
-      <nav id="category-nav" class="flex items-center gap-1 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+    <!-- 5. Horizontal Category Filter Bar & Dedicated Search (Clean Wrap Protection) -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 border-b border-stone-200/60 dark:border-stone-800/60">
+      <nav id="category-nav" class="flex items-center gap-1.5 overflow-x-auto scrollbar-none py-1 flex-1">
         <!-- Rendered via JS -->
       </nav>
 
-      <div class="relative w-full md:w-72">
+      <div class="relative w-full md:w-64 shrink-0">
         <input 
           id="search-input"
           type="text" 
-          placeholder="Search dispatches, authors, tags..."
-          class="w-full pl-9 pr-4 py-1.5 text-xs font-sans rounded-sm border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 focus:outline-none focus:border-stone-900 dark:focus:border-stone-100 text-stone-900 dark:text-stone-100 placeholder-stone-400"
+          placeholder="Search dispatches, alpha, tags..."
+          class="w-full pl-8 pr-3 py-1.5 text-xs font-sans rounded-sm border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 focus:outline-none focus:border-red-600 text-stone-900 dark:text-stone-100 placeholder-stone-400"
         />
-        <svg class="w-4 h-4 text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <svg class="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
       </div>
     </div>
+
   </header>
 
   <!-- MAIN EDITORIAL CONTENT -->
@@ -156,12 +257,12 @@
     <!-- Loading Spinner -->
     <div id="loading-spinner" class="hidden text-center py-12">
       <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-stone-900 dark:border-stone-100 mb-2"></div>
-      <div class="font-mono text-xs text-stone-500">Syncing with Naija Chronicles Bureau...</div>
+      <div class="font-mono text-xs text-stone-500">Connecting to Lagos Editorial Wire...</div>
     </div>
 
-    <!-- HERO EDITORIAL SECTION (Cover Story + Secondary Feature) -->
+    <!-- HERO SECTION (GUARANTEED NIGERIAN POLITICS COVER STORY + SECONDARY) -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 pb-12 mb-12 border-b border-stone-200 dark:border-stone-800">
-      <!-- Lead Cover Story (8 Cols) -->
+      <!-- Lead Nigerian Politics Story (8 Cols) -->
       <div id="lead-story-container" class="lg:col-span-8 lg:pr-8 lg:border-r border-stone-200 dark:border-stone-800">
         <!-- Injected by JS -->
       </div>
@@ -176,9 +277,9 @@
     <section class="pb-16 mb-16 border-b border-stone-200 dark:border-stone-800">
       <div class="flex items-center justify-between mb-8 pb-3 border-b-2 border-stone-950 dark:border-stone-50">
         <h2 class="font-display text-2xl font-bold uppercase tracking-wide">
-          The Longform & Dispatches
+          The Longform & Dispatches (10-15 Stories Stream)
         </h2>
-        <span class="font-mono text-xs text-stone-500">SECTION 02 • IN-DEPTH</span>
+        <span class="font-mono text-xs text-stone-500">SECTION 02 • DAILY INTELLIGENCE</span>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
@@ -247,10 +348,10 @@
           The Mandate for Slower, Deeper Journalistic Inquiries
         </h3>
         <p class="font-body-serif text-base text-stone-600 dark:text-stone-300 leading-relaxed mb-4">
-          In an age where news is manufactured to extract dopamine rather than cultivate insight, Naija Chronicles remains committed to tactile provenance, measured architectural criticism, and rigorous investigative reporting across West Africa and the globe.
+          In an age where news is manufactured to extract dopamine rather than cultivate insight, Naija Chronicles remains committed to tactile provenance, measured policy criticism, and rigorous investigative reporting from our Lagos Bureau.
         </p>
         <div class="font-sans text-xs font-semibold text-stone-800 dark:text-stone-200">
-          The Board of Editors • Lagos Bureau
+          The Board of Editors • Lagos Bureau, Nigeria
         </div>
       </div>
 
@@ -258,7 +359,7 @@
         <span class="font-mono text-xs uppercase tracking-widest text-stone-500 mb-1">Stay Informed</span>
         <h4 class="font-display text-xl font-bold mb-2">The Morning Dispatch</h4>
         <p class="text-xs text-stone-600 dark:text-stone-400 mb-4 font-sans">
-          Delivered every Tuesday & Friday morning. Curated longform without algorithmic noise.
+          Delivered every morning at 6:00 AM WAT. Curated Nigerian politics, markets, and playbooks.
         </p>
         <form onsubmit="handleNewsletterSignup(event)" class="flex flex-col sm:flex-row gap-2">
           <input 
@@ -283,18 +384,18 @@
         <div>
           <h4 class="font-masthead text-xl font-black mb-3">NAIJA CHRONICLES</h4>
           <p class="font-body-serif text-xs text-stone-600 dark:text-stone-400 leading-relaxed mb-4">
-            Published in Lagos, Abuja, London, and Tokyo. Powered by Supabase & BizDigits Architecture.
+            Independent Journal of Nigerian Politics, Wealth, and Contemporary Thought. Published exclusively from the Lagos Bureau.
           </p>
-          <div class="text-[11px] font-mono text-stone-500">ISSN 2940-192X • EST. 2026</div>
+          <div class="text-[11px] font-mono text-stone-500">ISSN 2940-192X • LAGOS BUREAU • EST. 2026</div>
         </div>
 
         <div>
           <h5 class="font-mono text-xs font-bold uppercase tracking-wider mb-3">Sections</h5>
           <ul class="space-y-2 text-xs font-sans text-stone-600 dark:text-stone-400">
+            <li><a href="#" onclick="selectCategory('Politics & Governance'); return false;" class="hover:text-red-600 font-bold">Politics & Governance</a></li>
             <li><a href="#" onclick="selectCategory('Stocks & Money'); return false;" class="hover:text-red-600">Stocks & Money</a></li>
             <li><a href="#" onclick="selectCategory('Hidden Wire'); return false;" class="hover:text-red-600">Hidden Wire</a></li>
             <li><a href="#" onclick="selectCategory('Passports & Mobility'); return false;" class="hover:text-red-600">Passports & Mobility</a></li>
-            <li><a href="#" onclick="selectCategory('Politics & Governance'); return false;" class="hover:text-red-600">Politics & Governance</a></li>
             <li><a href="#" onclick="selectCategory('Technology & Startups'); return false;" class="hover:text-red-600">Technology & Startups</a></li>
             <li><a href="#" onclick="selectCategory('World & Macro'); return false;" class="hover:text-red-600">World & Macro</a></li>
           </ul>
@@ -305,18 +406,17 @@
           <ul class="space-y-2 text-xs font-sans text-stone-600 dark:text-stone-400">
             <li><a href="community.html" class="text-red-700 dark:text-red-400 font-bold hover:underline">Community Wire (Individual Dispatches)</a></li>
             <li><a href="archive.html" class="hover:text-red-600">Weekly Archive & Past Editions</a></li>
+            <li><a href="feed.xml" target="_blank" class="hover:text-red-600">RSS News Feed (feed.xml)</a></li>
             <li><a href="#" onclick="openPublishModal(); return false;" class="hover:text-red-600">Editorial Submission Portal</a></li>
             <li><a href="#" onclick="openSupabaseModal(); return false;" class="hover:text-red-600">Supabase DB Sync</a></li>
-            <li><a href="schema.sql" target="_blank" class="hover:text-red-600">SQL Schema (schema.sql)</a></li>
-            <li><a href="#" class="hover:text-red-600">Ethics & Attribution Guide</a></li>
           </ul>
         </div>
 
         <div>
-          <h5 class="font-mono text-xs font-bold uppercase tracking-wider mb-3">Settings & Controls</h5>
-          <p class="text-xs text-stone-500 mb-3">Customize your reading typography and theme.</p>
+          <h5 class="font-mono text-xs font-bold uppercase tracking-wider mb-3">Settings & Distribution</h5>
+          <p class="text-xs text-stone-500 mb-3">Select your reading typography and theme mode.</p>
           <div class="flex items-center gap-2">
-            <button onclick="setTheme('light')" class="px-2.5 py-1 text-[11px] font-mono border border-stone-300 dark:border-stone-700 rounded">Light</button>
+            <button onclick="setTheme('light')" class="px-2.5 py-1 text-[11px] font-mono border border-stone-300 dark:border-stone-700 rounded">Ivory</button>
             <button onclick="setTheme('sepia')" class="px-2.5 py-1 text-[11px] font-mono border border-stone-300 dark:border-stone-700 rounded">Sepia</button>
             <button onclick="setTheme('dark')" class="px-2.5 py-1 text-[11px] font-mono border border-stone-300 dark:border-stone-700 rounded">Dark</button>
           </div>
@@ -324,8 +424,10 @@
       </div>
 
       <div class="border-t border-stone-200 dark:border-stone-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-stone-500">
-        <div>© 2026 Naija Chronicles Publishing House. All rights reserved.</div>
+        <div>© 2026 Naija Chronicles Publishing House (Lagos Bureau). All rights reserved.</div>
         <div class="flex items-center gap-4 mt-2 sm:mt-0">
+          <a href="sitemap.xml" target="_blank" class="hover:underline">Sitemap</a>
+          <span>•</span>
           <a href="#" onclick="openSupabaseModal(); return false;" class="hover:underline">Database Status</a>
           <span>•</span>
           <a href="#" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;" class="hover:underline">Back to Top ↑</a>
@@ -338,14 +440,14 @@
        MODALS & DRAWERS
        ========================================================================= -->
 
-  <!-- 1. FULL ARTICLE READER MODAL (Distraction-Free Magazine Reader) -->
+  <!-- 1. FULL ARTICLE READER MODAL (With Social Share Outreach) -->
   <div id="reader-modal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm overflow-y-auto">
     <div class="min-h-screen px-4 text-center">
       <div class="fixed inset-0" onclick="closeReaderModal()"></div>
 
       <div class="inline-block w-full max-w-4xl p-6 sm:p-10 my-8 text-left align-middle transition-all transform bg-[var(--bg-primary)] shadow-2xl rounded-sm border border-stone-200 dark:border-stone-800 relative z-10 modal-enter">
         <!-- Close Button -->
-        <button onclick="closeReaderModal()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 transition-colors">
+        <button onclick="closeReaderModal()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 transition-colors" title="Close">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
 
@@ -369,7 +471,7 @@
         <h3 class="font-display text-2xl font-bold">Supabase Database Integration</h3>
       </div>
       <p class="text-xs text-stone-600 dark:text-stone-400 mb-6 font-sans">
-        Connect your live Supabase project to fetch and publish articles dynamically. If credentials are empty, Naija Chronicles automatically serves from the high-res local editorial archive.
+        Connected to live Supabase project. Articles and newsletter signups synchronize directly with PostgreSQL.
       </p>
 
       <div class="space-y-4">
@@ -378,7 +480,7 @@
           <input 
             id="supabase-url-input"
             type="url" 
-            placeholder="https://xyzcompany.supabase.co" 
+            placeholder="https://ovndvemjdojlibawdcmk.supabase.co" 
             class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-emerald-600"
           />
         </div>
@@ -391,11 +493,6 @@
             placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." 
             class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-emerald-600"
           />
-        </div>
-
-        <div class="p-3 bg-stone-100 dark:bg-stone-900 rounded border border-stone-200 dark:border-stone-800 text-[11px] font-mono text-stone-600 dark:text-stone-400">
-          <div class="font-bold text-stone-800 dark:text-stone-200 mb-1">SQL Schema Ready:</div>
-          Run the included <code>schema.sql</code> script in your Supabase SQL editor to create the <code>articles</code> and <code>subscribers</code> tables automatically.
         </div>
 
         <div class="flex items-center justify-end gap-3 pt-4 border-t border-stone-200 dark:border-stone-800">
@@ -422,13 +519,13 @@
         <h3 class="font-display text-2xl font-bold">Publish New Editorial Dispatch</h3>
       </div>
       <p class="text-xs text-stone-600 dark:text-stone-400 mb-6 font-sans">
-        Submit an investigative piece, photo essay, or opinion column directly to the Naija Chronicles wire.
+        Submit a verified political investigation, market alpha breakdown, or policy analysis to the Lagos Wire.
       </p>
 
       <form onsubmit="handlePublishArticle(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Headline / Title *</label>
-          <input name="title" required placeholder="e.g. The Renaissance of Contemporary African Architecture" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-red-600" />
+          <input name="title" required placeholder="e.g. Inside the 2027 Coalition Arithmetic" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-red-600" />
         </div>
 
         <div>
@@ -440,26 +537,29 @@
           <div>
             <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Category *</label>
             <select name="category" class="w-full px-3 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none">
-              <option value="Architecture & Design">Architecture & Design</option>
-              <option value="Technology & Science">Technology & Science</option>
-              <option value="Culture & Style">Culture & Style</option>
-              <option value="Global Economy">Global Economy</option>
+              <option value="Politics & Governance">Politics & Governance</option>
+              <option value="Stocks & Money">Stocks & Money</option>
+              <option value="Hidden Wire">Hidden Wire</option>
+              <option value="Passports & Mobility">Passports & Mobility</option>
+              <option value="Technology & Startups">Technology & Startups</option>
+              <option value="Culture & Entertainment">Culture & Entertainment</option>
+              <option value="World & Macro">World & Macro</option>
             </select>
           </div>
           <div>
             <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Editorial Tag</label>
-            <input name="tag" placeholder="e.g. Deep Dive, Cover Story, Dispatch" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+            <input name="tag" placeholder="e.g. Cover Story, Trending Alpha, Eye-Opener" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
           </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Author Name *</label>
-            <input name="author_name" required placeholder="Elena Rostova" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Author / Desk Name *</label>
+            <input name="author_name" required placeholder="National Politics Wire" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
           </div>
           <div>
-            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Author Title / Role</label>
-            <input name="author_role" placeholder="Senior Critic" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Author Role / Attribution</label>
+            <input name="author_role" placeholder="Governance & Electoral Analysis Desk" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
           </div>
         </div>
 
@@ -470,22 +570,17 @@
           </div>
           <div>
             <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Read Time</label>
-            <input name="read_time" placeholder="e.g. 6 min read" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+            <input name="read_time" placeholder="e.g. 4 min read" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
           </div>
         </div>
 
         <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Image Caption & Credit</label>
-          <input name="image_caption" placeholder="Photo: Kenji Tanaka / Naija Chronicles." class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Verified Sources Credit</label>
+          <input name="image_caption" placeholder="Verified Sources: Premium Times, Vanguard, Punch." class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
         </div>
 
         <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Pull Quote (Optional)</label>
-          <input name="quote" placeholder="Key highlighted quote for magazine breakout box..." class="w-full px-3.5 py-2 text-xs font-serif italic rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
-        </div>
-
-        <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Article Body (HTML supported) *</label>
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Article Body (HTML / Paragraphs supported) *</label>
           <textarea name="content" required rows="6" placeholder="<p class='lead-paragraph'>Your article text...</p>" class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100"></textarea>
         </div>
 

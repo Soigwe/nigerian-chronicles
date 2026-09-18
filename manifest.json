@@ -1,0 +1,27 @@
+{
+  "name": "Naija Chronicles — Journal of Design, Geopolitics & Thought",
+  "short_name": "Naija Chronicles",
+  "description": "High-signal editorial journalism, daily political intelligence, stock breakdowns, and global mobility insights from Lagos, Nigeria.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#fcfbf7",
+  "theme_color": "#121212",
+  "icons": [
+    {
+      "src": "/assets/images/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/assets/images/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/images/favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["news", "magazines", "business", "politics"]
+}

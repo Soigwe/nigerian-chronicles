@@ -544,12 +544,34 @@ function openReaderModal(articleId) {
       ` : ''}
 
       <div id="reader-body-text" class="article-rich-body drop-cap text-stone-800 dark:text-stone-200">
-        ${article.content || `<p class="lead-paragraph">${article.dek}</p><p>Full content dispatch transmitted from The Chronicle editorial bureau.</p>`}
+        ${article.content || `<p class="lead-paragraph">${article.dek}</p><p>Full content dispatch transmitted from the Lagos editorial bureau.</p>`}
       </div>
 
-      <div class="border-t border-stone-200 dark:border-stone-800 pt-8 mt-12 flex items-center justify-between">
+      <!-- Social Outreach & Share Ribbon -->
+      <div class="my-8 p-4 sm:p-5 bg-stone-100/80 dark:bg-stone-900/80 rounded border border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-xs font-mono">
+          <span class="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider block sm:inline">Spread the Truth:</span>
+          <span class="text-stone-500 hidden sm:inline">Share this intelligence dispatch</span>
+        </div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + ' — ' + window.location.href)}" target="_blank" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center gap-1.5 shadow-sm">
+            WhatsApp
+          </a>
+          <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}" target="_blank" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 hover:opacity-90 transition-colors flex items-center gap-1.5 shadow-sm">
+            Post on X
+          </a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}" target="_blank" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-blue-700 text-white hover:bg-blue-800 transition-colors flex items-center gap-1.5 shadow-sm">
+            LinkedIn
+          </a>
+          <button onclick="copyArticleLink('${article.slug}')" class="px-3 py-1.5 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition-colors">
+            Copy Link
+          </button>
+        </div>
+      </div>
+
+      <div class="border-t border-stone-200 dark:border-stone-800 pt-8 mt-8 flex items-center justify-between">
         <div class="font-mono text-xs text-stone-500">
-          ARCHIVE REF: ${article.slug.toUpperCase()}
+          BUREAU ARCHIVE REF: ${article.slug.toUpperCase()}
         </div>
         <button onclick="closeReaderModal()" class="px-4 py-2 text-xs font-sans font-semibold uppercase tracking-wider bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 rounded-sm">
           Close Reader
@@ -560,6 +582,19 @@ function openReaderModal(articleId) {
 
   modal.classList.remove('hidden');
   document.body.style.overflow = 'hidden';
+}
+
+function copyArticleLink(slug) {
+  const url = window.location.origin + window.location.pathname + '#' + slug;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => {
+      showToast('Article link copied to clipboard!');
+    }).catch(() => {
+      prompt('Copy article link:', url);
+    });
+  } else {
+    prompt('Copy article link:', url);
+  }
 }
 
 function closeReaderModal() {

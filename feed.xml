@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Naija Chronicles — Morning Intelligence Wire</title>
+  <link>https://nigerian-chronicles.vercel.app</link>
+  <description>Daily editorial intelligence, Nigerian politics, stock alpha, hidden wire insights, and global mobility playbooks from Lagos, Nigeria.</description>
+  <language>en-NG</language>
+  <lastBuildDate>Fri, 18 Sep 2026 06:00:00 GMT</lastBuildDate>
+  <atom:link href="https://nigerian-chronicles.vercel.app/feed.xml" rel="self" type="application/rss+xml" />
+
+  <item>
+    <title>The 2027 Coalition Arithmetic: Why Subsidies, Local Govt Autonomy, and State Caucuses Are Heating Up Abuja</title>
+    <link>https://nigerian-chronicles.vercel.app/index.html#2027-coalition-arithmetic</link>
+    <description>Inside the emerging cross-party maneuvers, local government direct allocations, and how fuel subsidy debates are returning to the political centerstage.</description>
+    <category>Politics &amp; Governance</category>
+    <pubDate>Fri, 18 Sep 2026 06:00:00 GMT</pubDate>
+    <guid>https://nigerian-chronicles.vercel.app/art-politics-lead-20260918</guid>
+  </item>
+
+  <item>
+    <title>The Dangote Refinery IPO Truth: Wealth Multiplier or Retail Trap? What the Numbers Actually Say</title>
+    <link>https://nigerian-chronicles.vercel.app/index.html#dangote-refinery-ipo-truth</link>
+    <description>Analyzing the $20B refinery valuation, syndicated foreign debt obligations, and entry strategy for retail investors.</description>
+    <category>Stocks &amp; Money</category>
+    <pubDate>Fri, 18 Sep 2026 06:00:00 GMT</pubDate>
+    <guid>https://nigerian-chronicles.vercel.app/art-stocks-dangote-20260918</guid>
+  </item>
+
+  <item>
+    <title>The Stealth Tariff Shift: Why Your Light Token and Data Disappear Twice as Fast</title>
+    <link>https://nigerian-chronicles.vercel.app/index.html#stealth-tariff-shift</link>
+    <description>How DISCOs and telecom operators quietly reclassified feeder bands and validities while headlines focused on minimum wage debates.</description>
+    <category>Hidden Wire</category>
+    <pubDate>Fri, 18 Sep 2026 05:30:00 GMT</pubDate>
+    <guid>https://nigerian-chronicles.vercel.app/art-hidden-tariffs-20260918</guid>
+  </item>
+
+  <item>
+    <title>The 2026 Sovereign Backup: How Smart Nigerians Are Getting 2nd Passports &amp; Residencies Under $5k</title>
+    <link>https://nigerian-chronicles.vercel.app/index.html#2026-sovereign-backup</link>
+    <description>Legitimate low-friction residency alternatives: Paraguay permanent residency, Portugal D8 digital nomad routes, and sovereign risk management.</description>
+    <category>Passports &amp; Mobility</category>
+    <pubDate>Fri, 18 Sep 2026 05:00:00 GMT</pubDate>
+    <guid>https://nigerian-chronicles.vercel.app/art-mobility-passports-20260918</guid>
+  </item>
+</channel>
+</rss>
