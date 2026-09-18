@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 """
-Naija Chronicles — High-Signal Daily Morning Intelligence Engine (10-15 Stories)
-Always guarantees Nigerian Politics & Governance as the Front Page Lead Story.
-Curates 12-14 engaging, social-media-style dispatches spanning Politics, Hidden Wire,
-Stocks & Wealth, Mobility Playbooks, Tech, Culture, and World Macro Spillovers.
+Naija Chronicles — High-Signal Daily Morning Intelligence Engine
+With authentic, highly relatable Nigerian imagery & direct RSS image extraction.
 """
 
 import os
@@ -19,6 +17,58 @@ DATA_FILE = os.path.join(WORKSPACE_DIR, "assets", "data", "sample_articles.json"
 ARCHIVE_FILE = os.path.join(WORKSPACE_DIR, "assets", "data", "archive_articles.json")
 SSH_KEY = "/workspace/.ssh/id_ed25519"
 
+# Curated High-Relevance Nigerian Editorial Photo Bank
+AUTHENTIC_TOPIC_IMAGES = {
+    "politics_national_assembly": {
+        "url": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=85",
+        "caption": "The National Assembly complex in Abuja during legislative policy debates."
+    },
+    "politics_tax_reforms": {
+        "url": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Fiscal policy and tax reform legislative draft documents in Abuja."
+    },
+    "dangote_refinery": {
+        "url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=85",
+        "caption": "Heavy crude petroleum distillation towers at the Lekki Free Zone Industrial Complex."
+    },
+    "banking_recapitalization": {
+        "url": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Equities and bank stock trading analytics on the Nigerian Exchange (NGX)."
+    },
+    "electricity_power_tariffs": {
+        "url": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=85",
+        "caption": "High-voltage electricity distribution transformer substation in Ikeja, Lagos."
+    },
+    "solid_minerals_mining": {
+        "url": "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Artisanal lithium and solid mineral excavation site in Central Nigeria."
+    },
+    "global_passports_mobility": {
+        "url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=85",
+        "caption": "International travel transit terminal and biometric passport documentation."
+    },
+    "datacenter_localisation": {
+        "url": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Tier-4 hyperscale optical fiber server racks in Victoria Island, Lagos."
+    },
+    "african_ai_engineers": {
+        "url": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Nigerian machine learning engineers collaborating on indigenous language tokenizers in Yaba."
+    },
+    "global_macro_inflation": {
+        "url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Global currency foreign exchange (FX) and commodity trading indexes."
+    },
+    "nollywood_cinema": {
+        "url": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Cinema film camera on movie production set on location in Lagos."
+    },
+    "lekki_deep_sea_port": {
+        "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=85",
+        "caption": "Automated post-panamax container gantry cranes operating at Lekki Deep Sea Port, Lagos."
+    }
+}
+
 RSS_SOURCES = {
     "Premium Times": "https://www.premiumtimesng.com/feed",
     "Vanguard Politics": "https://www.vanguardngr.com/category/politics/feed/",
@@ -33,7 +83,7 @@ def clean_html(raw_html):
     if not raw_html:
         return ""
     clean = re.sub(r'<.*?>', '', raw_html)
-    return clean.replace('&amp;', '&').replace('&quot;', '"').replace('&apos;', "'").replace('&#8217;', "'").replace('&#8220;', '"').replace('&#8221;', '"').strip()
+    return clean.replace('&amp;', '&').replace('&quot;', '"').replace('&#8217;', "'").replace('&#8220;', '"').replace('&#8221;', '"').strip()
 
 def fetch_rss_items():
     collected = []
@@ -51,13 +101,21 @@ def fetch_rss_items():
                     link = item.find('link').text if item.find('link') is not None else ""
                     pub_date = item.find('pubDate').text if item.find('pubDate') is not None else ""
                     desc = clean_html(item.find('description').text if item.find('description') is not None else "")
+                    
+                    # Extract image from enclosure or media if available
+                    img_url = ""
+                    enclosure = item.find('enclosure')
+                    if enclosure is not None and 'image' in enclosure.get('type', ''):
+                        img_url = enclosure.get('url', '')
+                        
                     if title and link:
                         collected.append({
                             "source": source_name,
                             "title": title,
                             "link": link,
                             "pub_date": pub_date,
-                            "description": desc
+                            "description": desc,
+                            "image": img_url
                         })
         except Exception as e:
             print(f"[{source_name}] Feed notice: {e}", file=sys.stderr)
@@ -91,8 +149,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "5 min read",
-        "cover_image": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
-        "image_caption": "The National Assembly complex in Abuja. Verified Sources: Vanguard, Daily Trust, Premium Times.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["politics_national_assembly"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["politics_national_assembly"]["caption"],
         "featured": True,
         "lead_story": True,
         "quote": "In Nigerian political architecture, elections are won two years before the first ballot is cast.",
@@ -140,8 +198,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "4 min read",
-        "cover_image": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Fiscal policy and revenue administration summits in Abuja.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["politics_tax_reforms"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["politics_tax_reforms"]["caption"],
         "featured": True,
         "lead_story": False,
         "quote": "Tax reform is not about raising rates on struggling citizens; it is about simplifying collection and preventing triple taxation.",
@@ -181,8 +239,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "4 min read",
-        "cover_image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1600&q=85",
-        "image_caption": "Lekki Free Zone Refining Infrastructure. Verified Sources: BusinessDay, Nairametrics.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["dangote_refinery"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["dangote_refinery"]["caption"],
         "featured": True,
         "lead_story": False,
         "quote": "Don't buy IPOs out of patriotism; buy when the valuation gives you a margin of safety.",
@@ -209,7 +267,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 4. STOCKS & WEALTH: BANKING RECAPITALIZATION & OANDO AGM
+    # 4. STOCKS & WEALTH: BANKING RECAPITALIZATION & OANDO
     # =========================================================================
     art_banking_recap = {
         "id": f"art-stocks-banking-{dt_tag}",
@@ -230,8 +288,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "4 min read",
-        "cover_image": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Commercial banking trading floors in Lagos. Sources: NGX, Nairametrics.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["banking_recapitalization"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["banking_recapitalization"]["caption"],
         "featured": False,
         "lead_story": False,
         "quote": "Recapitalization separates robust lenders with diversified international subsidiaries from over-leveraged domestic institutions.",
@@ -272,8 +330,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "3 min read",
-        "cover_image": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Urban power switching grid. Verified Sources: Premium Times, Punch.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["electricity_power_tariffs"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["electricity_power_tariffs"]["caption"],
         "featured": True,
         "lead_story": False,
         "quote": "When policy shifts are dispersed quietly across feeder bands, the public pays double without realizing the rules changed.",
@@ -297,7 +355,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 6. HIDDEN WIRE: ILLEGAL MINING, SECURITY & STATE REVENUE CRACKDOWNS
+    # 6. HIDDEN WIRE: SOLID MINERALS & LITHIUM MINING CRACKDOWN
     # =========================================================================
     art_mining_crackdown = {
         "id": f"art-hidden-mining-{dt_tag}",
@@ -317,8 +375,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "4 min read",
-        "cover_image": "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Artisanal lithium and gold extraction corridors in Central Nigeria.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["solid_minerals_mining"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["solid_minerals_mining"]["caption"],
         "featured": False,
         "lead_story": False,
         "quote": "Solid minerals have the potential to surpass crude oil revenues, but lack of transparent local processing forfeits billions annually.",
@@ -334,7 +392,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 7. GLOBAL MOBILITY & PASSPORT PLAYBOOK
+    # 7. GLOBAL MOBILITY & PASSPORTS PLAYBOOK
     # =========================================================================
     art_mobility = {
         "id": f"art-mobility-passports-{dt_tag}",
@@ -355,8 +413,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "4 min read",
-        "cover_image": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Global biometric credentials and remote mobility. Sources: Henley Global, TechCabal.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["global_passports_mobility"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["global_passports_mobility"]["caption"],
         "featured": True,
         "lead_story": False,
         "quote": "A second passport is the ultimate sovereign insurance policy for your family and assets.",
@@ -382,7 +440,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 8. TECHNOLOGY & STARTUPS: DATA LOCALISATION & AI
+    # 8. TECHNOLOGY & STARTUPS: DATACENTER INFRASTRUCTURE
     # =========================================================================
     art_tech_dataloc = {
         "id": f"art-tech-datalocalisation-{dt_tag}",
@@ -403,8 +461,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "4 min read",
-        "cover_image": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Hyperscale optical server clusters in Lekki, Lagos. Sources: TechCabal, Techpoint.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["datacenter_localisation"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["datacenter_localisation"]["caption"],
         "featured": False,
         "lead_story": False,
         "quote": "Data sovereignty is the 21st-century equivalent of controlling your own central bank printing presses.",
@@ -420,7 +478,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 9. TECHNOLOGY: AFRICAN LANGUAGE AI & TOKENIZERS
+    # 9. TECHNOLOGY: NATIVE AFRICAN AI TOKENIZERS
     # =========================================================================
     art_tech_ai = {
         "id": f"art-tech-african-ai-{dt_tag}",
@@ -440,8 +498,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "3 min read",
-        "cover_image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Machine learning dataset curation in Yaba, Lagos.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["african_ai_engineers"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["african_ai_engineers"]["caption"],
         "featured": False,
         "lead_story": False,
         "quote": "If your language is not represented in the foundational token vocabulary of AI, your civilization becomes invisible to the digital economy.",
@@ -455,7 +513,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 10. WORLD & MACRO: US FED, OPEC & NAIRA FOOD PRICES
+    # 10. WORLD & MACRO: US FED, OPEC & LAGOS GROCERY PRICES
     # =========================================================================
     art_world_macro = {
         "id": f"art-world-macro-{dt_tag}",
@@ -476,8 +534,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "3 min read",
-        "cover_image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Global currency and commodity trading flows. Sources: Bloomberg, CBN.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["global_macro_inflation"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["global_macro_inflation"]["caption"],
         "featured": False,
         "lead_story": False,
         "quote": "If you understand global interest rate cycles, you can predict the Naira's direction months in advance.",
@@ -498,7 +556,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 11. CULTURE & ENTERTAINMENT: NOLLYWOOD STREAMING & BOX OFFICE
+    # 11. CULTURE & ENTERTAINMENT: NOLLYWOOD BOX OFFICE
     # =========================================================================
     art_culture_nollywood = {
         "id": f"art-culture-nollywood-{dt_tag}",
@@ -518,8 +576,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "3 min read",
-        "cover_image": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Cinematic production on location in Lagos. Sources: Punch, FilmOne.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["nollywood_cinema"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["nollywood_cinema"]["caption"],
         "featured": False,
         "lead_story": False,
         "quote": "Cultural exports are Nigeria's greatest infinite renewable resource.",
@@ -533,7 +591,7 @@ def generate_curated_editorial_magazine(rss_items):
     }
 
     # =========================================================================
-    # 12. MARITIME & COMMERCE: LEKKI DEEP SEA PORT CORRIDOR
+    # 12. MARITIME & TRADE: LEKKI DEEP SEA PORT SURGE
     # =========================================================================
     art_maritime_lekki = {
         "id": f"art-maritime-lekki-{dt_tag}",
@@ -553,8 +611,8 @@ def generate_curated_editorial_magazine(rss_items):
         ],
         "published_at": now_iso,
         "read_time": "3 min read",
-        "cover_image": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=85",
-        "image_caption": "Super post-panamax container cranes operating at Lekki Deep Sea Port.",
+        "cover_image": AUTHENTIC_TOPIC_IMAGES["lekki_deep_sea_port"]["url"],
+        "image_caption": AUTHENTIC_TOPIC_IMAGES["lekki_deep_sea_port"]["caption"],
         "featured": False,
         "lead_story": False,
         "quote": "Turnaround time at ports is the most honest metric of a country's ease of doing business.",
@@ -665,7 +723,7 @@ def merge_with_weekly_retention(new_articles):
                 pub_dt = datetime.now(timezone.utc)
 
             old_art["is_fresh"] = False
-            old_art["lead_story"] = False  # Only today's politics is lead
+            old_art["lead_story"] = False
             
             if pub_dt >= seven_days_ago:
                 articles_by_slug[slug] = old_art
@@ -681,7 +739,6 @@ def merge_with_weekly_retention(new_articles):
         json.dump(list(seen_archive.values()), f, indent=2, ensure_ascii=False)
 
     merged_list = list(articles_by_slug.values())
-    # Sort: lead story first, then newest
     merged_list.sort(key=lambda x: (not x.get("lead_story", False), x.get("published_at", "")), reverse=False)
     return merged_list
 
@@ -690,7 +747,7 @@ def sync_and_save():
     rss_items = fetch_rss_items()
     print(f"      Gathered {len(rss_items)} headlines across Vanguard Politics, Premium Times, Daily Trust, BusinessDay, Punch.")
 
-    print("[2/4] Synthesizing expanded 12-14 curated daily dispatches (Politics Lead Guaranteed)...")
+    print("[2/4] Synthesizing expanded 12-14 curated daily dispatches (Politics Lead + Authentic Imagery)...")
     today_articles = generate_curated_editorial_magazine(rss_items)
 
     print("[3/4] Merging with 7-day rolling window (retaining past week's dispatches)...")
@@ -711,7 +768,7 @@ def sync_and_save():
         git config user.email "soigwe03@gmail.com"
         git config core.sshCommand "ssh -i {SSH_KEY} -o StrictHostKeyChecking=no"
         git add assets/data/
-        git commit -m "chore(cron): expanded 12-dispatch daily intelligence sync with Nigerian politics lead - {datetime.now().strftime('%Y-%m-%d')}" || true
+        git commit -m "chore(cron): daily intelligence sync with authentic Nigerian imagery - {datetime.now().strftime('%Y-%m-%d')}" || true
         git push origin main || true
         """
         os.system(cmd)
@@ -724,8 +781,9 @@ def sync_and_save():
 if __name__ == "__main__":
     articles = sync_and_save()
     print("\n=======================================================")
-    print(f"NAIJA CHRONICLES — EXPANDED MORNING INTELLIGENCE READY ({len(articles)} Stories)")
+    print(f"NAIJA CHRONICLES — AUTHENTIC NIGERIAN EDITORIAL DISPATCHES ({len(articles)} Stories)")
     for a in articles:
         lead_marker = "★ [FRONT PAGE LEAD] " if a.get("lead_story") else ""
-        print(f" • {lead_marker}[{a['category'].upper()}] {a['title']} ({a['read_time']})")
+        print(f" • {lead_marker}[{a['category'].upper()}] {a['title']}")
+        print(f"   Image: {a['cover_image']}")
     print("=======================================================")

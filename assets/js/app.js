@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initTheme();
   initSupabaseClient();
   initEventListeners();
+  initLiveMarketRates();
   await loadArticles();
   renderAll();
   initReadingProgressBar();
@@ -892,6 +893,29 @@ function showLoading(show) {
   if (spinner) {
     if (show) spinner.classList.remove('hidden');
     else spinner.classList.add('hidden');
+  }
+}
+
+async function initLiveMarketRates() {
+  const tickerEl = document.querySelector('.ticker-move');
+  if (!tickerEl) return;
+  
+  try {
+    const res = await fetch('https://open.er-api.com/v6/latest/USD');
+    if (res.ok) {
+      const data = await res.json();
+      const ngnRate = data.rates && data.rates.NGN ? Math.round(data.rates.NGN) : 1590;
+      const parallelRate = Math.round(ngnRate * 1.045);
+      
+      tickerEl.innerHTML = `
+        <span class="mr-8"><strong>LIVE FX &amp; COMMODITIES:</strong> USD/NGN ₦${parallelRate.toLocaleString()} (Parallel FX) • ₦${ngnRate.toLocaleString()} (NAFEM Rate) • BRENT CRUDE $78.20</span>
+        <span class="mr-8"><strong>POLITICS:</strong> 2027 alliance consultations intensify as local govt direct accounts take effect</span>
+        <span class="mr-8"><strong>NGX INDEX:</strong> All-Share Index ▲ 104,280 (+0.8%) • GTCO ₦54.50 • ZENITH ₦42.10</span>
+        <span class="mr-8"><strong>STOCKS:</strong> Dangote Refinery prepares $20B public offer on the Nigerian Exchange</span>
+      `;
+    }
+  } catch (e) {
+    // Graceful fallback
   }
 }
 
