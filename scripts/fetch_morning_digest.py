@@ -290,6 +290,52 @@ def generate_curated_editorial_magazine(rss_items):
 
     return [art_lead, art_hidden, art_mobility, art_politics, art_tech, art_culture, art_world]
 
+def sync_to_supabase_if_configured(articles):
+    supabase_url = os.environ.get("SUPABASE_URL", "")
+    supabase_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or os.environ.get("SUPABASE_ANON_KEY") or os.environ.get("SUPABASE_KEY", "")
+    
+    if not supabase_url or not supabase_key:
+        return False
+        
+    try:
+        req_data = []
+        for a in articles:
+            req_data.append({
+                "title": a["title"],
+                "slug": a["slug"],
+                "dek": a["dek"],
+                "category": a["category"],
+                "tag": a.get("tag", "Dispatch"),
+                "author_name": a["author"]["name"],
+                "author_role": a["author"]["role"],
+                "author_avatar": a["author"]["avatar"],
+                "read_time": a["read_time"],
+                "cover_image": a["cover_image"],
+                "image_caption": a["image_caption"],
+                "featured": a["featured"],
+                "lead_story": a["lead_story"],
+                "quote": a.get("quote", ""),
+                "content": a["content"]
+            })
+            
+        endpoint = f"{supabase_url.rstrip('/')}/rest/v1/articles"
+        headers = {
+            "apikey": supabase_key,
+            "Authorization": f"Bearer {supabase_key}",
+            "Content-Type": "application/json",
+            "Prefer": "resolution=merge-duplicates"
+        }
+        
+        req = urllib.request.Request(endpoint, data=json.dumps(req_data).encode("utf-8"), headers=headers, method="POST")
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if resp.status in (200, 201):
+                print("      Successfully synced articles directly to Supabase database!")
+                return True
+    except Exception as e:
+        print(f"      Supabase direct sync notice: {e}", file=sys.stderr)
+        
+    return False
+
 def sync_and_save():
     print("[1/4] Fetching live feeds from Nigerian news portals...")
     rss_items = fetch_rss_items()
@@ -302,6 +348,8 @@ def sync_and_save():
     os.makedirs(os.path.dirname(DATA_FILE), exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
         json.dump(articles, f, indent=2, ensure_ascii=False)
+        
+    sync_to_supabase_if_configured(articles)
 
     print("[4/4] Committing and syncing to GitHub repository...")
     try:
