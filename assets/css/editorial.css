@@ -1,0 +1,243 @@
+/* ==========================================================================
+   THE CHRONICLE — Editorial Magazine Design System & Typography
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cinzel:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --bg-primary: #fcfbf7;
+  --bg-secondary: #f4f1ea;
+  --bg-card: #ffffff;
+  --text-primary: #121212;
+  --text-secondary: #5a5751;
+  --text-muted: #8c887f;
+  --border-subtle: #e5e0d3;
+  --border-strong: #121212;
+  --accent-editorial: #b91c1c; /* Burgundy / Crimson */
+  --accent-gold: #c59b27;
+  --font-serif-display: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
+  --font-serif-body: 'Newsreader', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-masthead: 'Cinzel', serif;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0d0d0d;
+  --bg-secondary: #171717;
+  --bg-card: #141414;
+  --text-primary: #f5f4f0;
+  --text-secondary: #a39f96;
+  --text-muted: #6b6760;
+  --border-subtle: #262522;
+  --border-strong: #f5f4f0;
+  --accent-editorial: #ef4444;
+  --accent-gold: #eab308;
+}
+
+[data-theme="sepia"] {
+  --bg-primary: #f4ece1;
+  --bg-secondary: #ebe0d0;
+  --bg-card: #f9f5ee;
+  --text-primary: #2b241e;
+  --text-secondary: #6e6459;
+  --text-muted: #9c9183;
+  --border-subtle: #dbcebe;
+  --border-strong: #2b241e;
+  --accent-editorial: #991b1b;
+  --accent-gold: #b45309;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
+
+/* Typography Utility Classes */
+.font-display {
+  font-family: var(--font-serif-display);
+}
+
+.font-body-serif {
+  font-family: var(--font-serif-body);
+}
+
+.font-masthead {
+  font-family: var(--font-masthead);
+}
+
+.font-mono-meta {
+  font-family: var(--font-mono);
+}
+
+/* Editorial Drop Caps */
+.drop-cap:first-letter {
+  float: left;
+  font-family: var(--font-serif-display);
+  font-size: 4.5rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 12px;
+  padding-bottom: 2px;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* Magazine Column Borders */
+.col-divider-right {
+  border-right: 1px solid var(--border-subtle);
+}
+
+.col-divider-left {
+  border-left: 1px solid var(--border-subtle);
+}
+
+.row-divider-bottom {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.row-divider-top {
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* Editorial Pull Quotes */
+.editorial-quote {
+  position: relative;
+  font-family: var(--font-serif-display);
+  font-style: italic;
+  font-size: 1.65rem;
+  line-height: 1.35;
+  color: var(--text-primary);
+  padding: 1.5rem 0;
+  margin: 2rem 0;
+  border-top: 2px solid var(--border-strong);
+  border-bottom: 2px solid var(--border-strong);
+}
+
+.editorial-quote::before {
+  content: "“";
+  display: block;
+  font-size: 4rem;
+  line-height: 0;
+  position: absolute;
+  top: 10px;
+  left: -20px;
+  opacity: 0.15;
+  font-family: Georgia, serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-subtle);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Image Zoom & Hover effects */
+.image-editorial-frame {
+  overflow: hidden;
+  background-color: var(--bg-secondary);
+}
+
+.image-editorial-frame img {
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.image-editorial-frame:hover img {
+  transform: scale(1.04);
+}
+
+/* Reading Progress Bar */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: var(--accent-editorial);
+  z-index: 100;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* Modal Animations */
+.modal-enter {
+  animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Magazine Ticker */
+.ticker-wrap {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-move {
+  display: inline-block;
+  white-space: nowrap;
+  animation: ticker 40s linear infinite;
+}
+
+.ticker-move:hover {
+  animation-play-state: paused;
+}
+
+@keyframes ticker {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Magazine Article Body Typography */
+.article-rich-body {
+  font-family: var(--font-serif-body);
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+
+.article-rich-body p {
+  margin-bottom: 1.75rem;
+}
+
+.article-rich-body h3 {
+  font-family: var(--font-serif-display);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.article-rich-body blockquote {
+  border-left: 3px solid var(--accent-editorial);
+  padding-left: 1.5rem;
+  font-style: italic;
+  margin: 2rem 0;
+  font-family: var(--font-serif-display);
+  font-size: 1.35rem;
+  color: var(--text-secondary);
+}
