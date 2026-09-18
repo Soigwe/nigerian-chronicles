@@ -157,6 +157,7 @@ function renderAll() {
   renderLeadStory();
   renderFeaturedSecondary();
   renderEditorialColumns();
+  renderWeeklyArchiveSection();
   renderBriefings();
   renderVisualEssay();
   renderTrendingList();
@@ -316,6 +317,42 @@ function renderEditorialColumns() {
       </div>
     `;
   }).join('');
+}
+
+// Render Weekly Archive (Past 7 Days Dispatches)
+function renderWeeklyArchiveSection() {
+  const container = document.getElementById('weekly-archive-grid');
+  if (!container) return;
+
+  // Find articles from the past week (excluding today's top lead story)
+  const archiveItems = state.filteredArticles.filter(a => !a.lead_story);
+  
+  if (archiveItems.length === 0) {
+    container.innerHTML = `<div class="col-span-full py-8 text-center text-stone-500 font-sans text-xs">No older dispatches in this 7-day window.</div>`;
+    return;
+  }
+
+  container.innerHTML = archiveItems.slice(0, 6).map(art => `
+    <div class="group cursor-pointer flex flex-col justify-between p-5 border border-stone-200/80 dark:border-stone-800 rounded-sm bg-card hover:shadow-md transition-all" onclick="openReaderModal('${art.id}')">
+      <div>
+        <div class="flex items-center justify-between text-[11px] font-mono mb-2 text-stone-500">
+          <span class="font-bold text-red-700 dark:text-red-400 uppercase">${art.category}</span>
+          <span>${formatDate(art.published_at)}</span>
+        </div>
+        <h4 class="font-display text-lg font-bold leading-snug mb-2 group-hover:text-red-700 dark:group-hover:text-red-400 transition-colors">
+          ${art.title}
+        </h4>
+        <p class="font-body-serif text-xs text-stone-600 dark:text-stone-400 leading-relaxed mb-4 line-clamp-3">
+          ${art.dek}
+        </p>
+      </div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px] font-mono text-stone-500">
+        <span>${art.author.name}</span>
+        <span>${art.read_time}</span>
+      </div>
+    </div>
+  `).join('');
 }
 
 // Render Briefings Column

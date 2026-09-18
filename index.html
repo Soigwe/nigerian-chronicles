@@ -99,6 +99,10 @@
 
       <!-- Quick Action Controls -->
       <div class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-3">
+        <a href="archive.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Archive
+        </a>
+
         <a href="community.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-bold uppercase tracking-wider bg-red-700 text-white hover:bg-red-800 transition-colors shadow-sm">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg> Community Wire
         </a>
@@ -208,6 +212,28 @@
       </div>
     </section>
 
+    <!-- THIS WEEK'S ARCHIVE (Past 7 Days Dispatches) -->
+    <section class="pb-16 mb-16 border-b border-stone-200 dark:border-stone-800">
+      <div class="flex items-center justify-between mb-8 pb-3 border-b-2 border-stone-950 dark:border-stone-50">
+        <div class="flex items-center gap-3">
+          <span class="w-2.5 h-2.5 rounded-full bg-stone-400"></span>
+          <h2 class="font-display text-2xl font-bold uppercase tracking-wide">
+            This Week's Wire (Past 7 Days)
+          </h2>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-xs text-stone-500 hidden sm:inline">7-Day Rolling Retention</span>
+          <a href="archive.html" class="font-mono text-xs font-bold text-red-700 dark:text-red-400 hover:underline">
+            View Full Archive →
+          </a>
+        </div>
+      </div>
+
+      <div id="weekly-archive-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Injected dynamically by JS -->
+      </div>
+    </section>
+
     <!-- FULL-BLEED VISUAL ESSAY SPOTLIGHT -->
     <section id="visual-essay-container" class="mb-16">
       <!-- Injected by JS -->
@@ -278,6 +304,7 @@
           <h5 class="font-mono text-xs font-bold uppercase tracking-wider mb-3">Editorial Desk</h5>
           <ul class="space-y-2 text-xs font-sans text-stone-600 dark:text-stone-400">
             <li><a href="community.html" class="text-red-700 dark:text-red-400 font-bold hover:underline">Community Wire (Individual Dispatches)</a></li>
+            <li><a href="archive.html" class="hover:text-red-600">Weekly Archive & Past Editions</a></li>
             <li><a href="#" onclick="openPublishModal(); return false;" class="hover:text-red-600">Editorial Submission Portal</a></li>
             <li><a href="#" onclick="openSupabaseModal(); return false;" class="hover:text-red-600">Supabase DB Sync</a></li>
             <li><a href="schema.sql" target="_blank" class="hover:text-red-600">SQL Schema (schema.sql)</a></li>

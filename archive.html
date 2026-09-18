@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Archive & Past Editions — NAIJA CHRONICLES</title>
+  <meta name="description" content="Browse past daily editions and weekly archives from Naija Chronicles." />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            editorial: {
+              crimson: '#b91c1c',
+              gold: '#c59b27',
+              ivory: '#fcfbf7',
+              charcoal: '#121212',
+              sand: '#f4f1ea'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Custom Editorial Styles -->
+  <link rel="stylesheet" href="assets/css/editorial.css" />
+</head>
+<body class="min-h-screen flex flex-col selection:bg-red-900 selection:text-white">
+
+  <!-- Top Reading Progress Indicator -->
+  <div id="reading-progress"></div>
+
+  <!-- HEADER & MASTHEAD -->
+  <header class="border-b border-stone-200 dark:border-stone-800 bg-[var(--bg-primary)]">
+    <!-- Top Metadata Bar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-stone-200/60 dark:border-stone-800/60 py-2 flex flex-wrap items-center justify-between text-[11px] font-mono text-stone-500">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1">
+          ← Back to Front Page
+        </a>
+        <span>•</span>
+        <span>HISTORICAL & WEEKLY ARCHIVE DESK</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div class="flex items-center border border-stone-200 dark:border-stone-800 rounded p-0.5 bg-stone-50 dark:bg-stone-900">
+          <button onclick="setTheme('light')" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors">Ivory</button>
+          <button onclick="setTheme('sepia')" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors">Sepia</button>
+          <button onclick="setTheme('dark')" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors">Dark</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Masthead Brand -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 text-center relative">
+      <div class="text-[11px] font-mono tracking-[0.3em] uppercase text-stone-500 mb-2">
+        Naija Chronicles • Retrospective
+      </div>
+      
+      <h1 class="font-masthead text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-stone-950 dark:text-stone-50">
+        <a href="archive.html">THE WEEKLY ARCHIVE</a>
+      </h1>
+
+      <div class="flex items-center justify-center gap-6 mt-3 text-xs font-body-serif italic text-stone-600 dark:text-stone-400">
+        <span>"Past Editions • 7-Day Rolling Records • Historical Dispatches"</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN ARCHIVE STREAM -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
+
+    <div class="mb-8 flex items-center justify-between pb-3 border-b-2 border-stone-950 dark:border-stone-50">
+      <h2 class="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide">
+        All Archived Dispatches
+      </h2>
+      <span id="archive-count" class="font-mono text-xs text-stone-500">Loading archive records...</span>
+    </div>
+
+    <div id="archive-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+      <!-- Injected by script -->
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-stone-200 dark:border-stone-800 bg-[var(--bg-secondary)] mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-stone-500 gap-4">
+      <div>© 2026 Naija Chronicles • Perpetual Archive Desk</div>
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="hover:underline">Front Page</a>
+        <span>•</span>
+        <a href="community.html" class="hover:underline">Community Wire</a>
+        <span>•</span>
+        <a href="#" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;" class="hover:underline">Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Reader Modal -->
+  <div id="reader-modal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm overflow-y-auto">
+    <div class="min-h-screen px-4 text-center">
+      <div class="fixed inset-0" onclick="closeReaderModal()"></div>
+      <div class="inline-block w-full max-w-4xl p-6 sm:p-10 my-8 text-left align-middle transition-all transform bg-[var(--bg-primary)] shadow-2xl rounded-sm border border-stone-200 dark:border-stone-800 relative z-10 modal-enter">
+        <button onclick="closeReaderModal()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <div id="reader-article-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let archiveArticles = [];
+    const theme = localStorage.getItem('the_chronicle_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+
+    function setTheme(t) {
+      localStorage.setItem('the_chronicle_theme', t);
+      document.documentElement.setAttribute('data-theme', t);
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('assets/data/sample_articles.json');
+        if (res.ok) {
+          archiveArticles = await res.json();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+
+      renderArchive();
+    });
+
+    function renderArchive() {
+      const grid = document.getElementById('archive-grid');
+      const countEl = document.getElementById('archive-count');
+      if (countEl) countEl.textContent = `${archiveArticles.length} dispatches cataloged`;
+      if (!grid) return;
+
+      grid.innerHTML = archiveArticles.map(art => `
+        <div class="group cursor-pointer flex flex-col justify-between p-5 border border-stone-200/80 dark:border-stone-800 rounded-sm bg-card hover:shadow-lg transition-all" onclick="openArchiveReader('${art.id}')">
+          <div>
+            <div class="flex items-center justify-between text-[11px] font-mono mb-2 text-stone-500">
+              <span class="font-bold text-red-700 dark:text-red-400 uppercase">${art.category}</span>
+              <span>${new Date(art.published_at).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'})}</span>
+            </div>
+            <h3 class="font-display text-lg font-bold leading-snug mb-2 group-hover:text-red-700 dark:group-hover:text-red-400 transition-colors">
+              ${art.title}
+            </h3>
+            <p class="font-body-serif text-xs text-stone-600 dark:text-stone-400 leading-relaxed mb-4 line-clamp-3">
+              ${art.dek}
+            </p>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-stone-100 dark:border-stone-800 text-[11px] font-mono text-stone-500">
+            <span>By ${art.author.name}</span>
+            <span>${art.read_time}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function openArchiveReader(id) {
+      const art = archiveArticles.find(a => a.id === id);
+      if (!art) return;
+      const modal = document.getElementById('reader-modal');
+      const body = document.getElementById('reader-article-content');
+      body.innerHTML = `
+        <div class="max-w-3xl mx-auto py-6">
+          <div class="text-xs font-mono text-red-700 font-bold uppercase mb-2">${art.category} • ${art.read_time}</div>
+          <h1 class="font-display text-3xl sm:text-4xl font-bold leading-tight mb-4">${art.title}</h1>
+          <p class="font-body-serif text-lg text-stone-600 dark:text-stone-300 italic mb-6">${art.dek}</p>
+          <div class="article-rich-body drop-cap text-stone-800 dark:text-stone-200">${art.content}</div>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+    }
+
+    function closeReaderModal() {
+      document.getElementById('reader-modal')?.classList.add('hidden');
+    }
+  </script>
+</body>
+</html>

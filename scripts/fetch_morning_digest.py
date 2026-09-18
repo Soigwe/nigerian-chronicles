@@ -11,10 +11,11 @@ import json
 import re
 import urllib.request
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 WORKSPACE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_FILE = os.path.join(WORKSPACE_DIR, "assets", "data", "sample_articles.json")
+ARCHIVE_FILE = os.path.join(WORKSPACE_DIR, "assets", "data", "archive_articles.json")
 SSH_KEY = "/workspace/.ssh/id_ed25519"
 
 RSS_SOURCES = {
@@ -294,20 +295,84 @@ def sync_to_supabase_if_configured(articles):
         
     return False
 
+def merge_with_weekly_retention(new_articles):
+    existing = []
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                existing = json.load(f)
+        except Exception:
+            existing = []
+
+    # Map by slug
+    articles_by_slug = {}
+    
+    # 1. Add new articles first (they take precedence for fresh status)
+    for a in new_articles:
+        a["is_fresh"] = True
+        articles_by_slug[a["slug"]] = a
+
+    # 2. Add existing older articles (retaining for 7 days)
+    seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
+    
+    archive_list = []
+    if os.path.exists(ARCHIVE_FILE):
+        try:
+            with open(ARCHIVE_FILE, "r", encoding="utf-8") as f:
+                archive_list = json.load(f)
+        except Exception:
+            archive_list = []
+
+    for old_art in existing:
+        slug = old_art.get("slug")
+        if slug not in articles_by_slug:
+            # Parse published date
+            pub_date_str = old_art.get("published_at", "")
+            try:
+                pub_dt = datetime.fromisoformat(pub_date_str.replace("Z", "+00:00"))
+            except Exception:
+                pub_dt = datetime.now(timezone.utc)
+
+            # Mark as not fresh (archival)
+            old_art["is_fresh"] = False
+            old_art["lead_story"] = False  # Only today's top story is lead
+            
+            if pub_dt >= seven_days_ago:
+                articles_by_slug[slug] = old_art
+            else:
+                archive_list.append(old_art)
+
+    # Save perpetual archive
+    os.makedirs(os.path.dirname(ARCHIVE_FILE), exist_ok=True)
+    with open(ARCHIVE_FILE, "w", encoding="utf-8") as f:
+        # Deduplicate archive
+        seen_archive = {}
+        for item in archive_list:
+            seen_archive[item["slug"]] = item
+        json.dump(list(seen_archive.values()), f, indent=2, ensure_ascii=False)
+
+    # Convert merged map to sorted list (newest first)
+    merged_list = list(articles_by_slug.values())
+    merged_list.sort(key=lambda x: x.get("published_at", ""), reverse=True)
+    return merged_list
+
 def sync_and_save():
     print("[1/4] Fetching live feeds from Nigerian news portals...")
     rss_items = fetch_rss_items()
     print(f"      Gathered {len(rss_items)} headlines across Vanguard, Punch, BusinessDay, Nairametrics, TechCabal.")
 
     print("[2/4] Synthesizing curated daily dispatches (Max 4-5 high-signal drops)...")
-    articles = generate_curated_editorial_magazine(rss_items)
+    today_articles = generate_curated_editorial_magazine(rss_items)
 
-    print(f"[3/4] Writing {len(articles)} curated dispatches to {DATA_FILE}...")
+    print("[3/4] Merging with 7-day rolling window (retaining past week's dispatches)...")
+    all_active_articles = merge_with_weekly_retention(today_articles)
+
+    print(f"      Active 7-day stream: {len(all_active_articles)} articles (Today's fresh: {len(today_articles)})")
     os.makedirs(os.path.dirname(DATA_FILE), exist_ok=True)
     with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(articles, f, indent=2, ensure_ascii=False)
+        json.dump(all_active_articles, f, indent=2, ensure_ascii=False)
         
-    sync_to_supabase_if_configured(articles)
+    sync_to_supabase_if_configured(all_active_articles)
 
     print("[4/4] Committing and syncing to GitHub repository...")
     try:
@@ -316,8 +381,8 @@ def sync_and_save():
         git config user.name "Soigwe"
         git config user.email "soigwe03@gmail.com"
         git config core.sshCommand "ssh -i {SSH_KEY} -o StrictHostKeyChecking=no"
-        git add assets/data/sample_articles.json
-        git commit -m "chore(cron): daily morning intelligence digest sync - {datetime.now().strftime('%Y-%m-%d')}" || true
+        git add assets/data/
+        git commit -m "chore(cron): daily intelligence sync with 7-day retention - {datetime.now().strftime('%Y-%m-%d')}" || true
         git push origin main || true
         """
         os.system(cmd)
@@ -325,7 +390,7 @@ def sync_and_save():
     except Exception as e:
         print(f"      Git push notice: {e}", file=sys.stderr)
 
-    return articles
+    return all_active_articles
 
 if __name__ == "__main__":
     articles = sync_and_save()
