@@ -185,12 +185,18 @@ function filterArticles() {
   state.filteredArticles = list;
 }
 
-// Render Lead Cover Story
+// Render Lead Cover Story (Always prioritizes Nigerian Politics & Governance)
 function renderLeadStory() {
   const container = document.getElementById('lead-story-container');
   if (!container) return;
 
-  const lead = state.filteredArticles.find(a => a.lead_story) || state.filteredArticles[0];
+  const lead = (state.selectedCategory === 'all')
+    ? (state.filteredArticles.find(a => a.category === 'Politics & Governance' && a.lead_story) ||
+       state.filteredArticles.find(a => a.category === 'Politics & Governance') ||
+       state.filteredArticles.find(a => a.lead_story) ||
+       state.filteredArticles[0])
+    : (state.filteredArticles.find(a => a.lead_story) || state.filteredArticles[0]);
+
   if (!lead) {
     container.innerHTML = `<div class="p-12 text-center text-stone-500 font-display">No editorial stories match this filter.</div>`;
     return;
@@ -285,7 +291,7 @@ function renderEditorialColumns() {
   const container = document.getElementById('editorial-grid-container');
   if (!container) return;
 
-  const others = state.filteredArticles.filter(a => !a.lead_story).slice(1);
+  const others = state.filteredArticles.filter(a => !a.lead_story).slice(1, 9);
   if (others.length === 0) {
     container.innerHTML = '';
     return;
