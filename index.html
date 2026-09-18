@@ -99,6 +99,10 @@
 
       <!-- Quick Action Controls -->
       <div class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-3">
+        <a href="community.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-bold uppercase tracking-wider bg-red-700 text-white hover:bg-red-800 transition-colors shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg> Community Wire
+        </a>
+
         <button onclick="openPublishModal()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-mono font-medium bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 hover:bg-neutral-800 transition-colors shadow-sm">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> Publish
         </button>
@@ -273,6 +277,7 @@
         <div>
           <h5 class="font-mono text-xs font-bold uppercase tracking-wider mb-3">Editorial Desk</h5>
           <ul class="space-y-2 text-xs font-sans text-stone-600 dark:text-stone-400">
+            <li><a href="community.html" class="text-red-700 dark:text-red-400 font-bold hover:underline">Community Wire (Individual Dispatches)</a></li>
             <li><a href="#" onclick="openPublishModal(); return false;" class="hover:text-red-600">Editorial Submission Portal</a></li>
             <li><a href="#" onclick="openSupabaseModal(); return false;" class="hover:text-red-600">Supabase DB Sync</a></li>
             <li><a href="schema.sql" target="_blank" class="hover:text-red-600">SQL Schema (schema.sql)</a></li>

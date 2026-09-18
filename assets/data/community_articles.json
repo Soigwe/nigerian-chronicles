@@ -1,0 +1,62 @@
+[
+  {
+    "id": "comm-001",
+    "title": "How Solar Mini-Grids Are Rescuing Cocoa & Cashew Processing in Ondo State",
+    "slug": "solar-mini-grids-cocoa-cashew-processing-ondo",
+    "dek": "A ground report from rural agro-hubs: How decentralized off-grid solar cooperatives eliminated ₦450,000 monthly diesel bills for smallholder farmer clusters.",
+    "category": "Economy & Business",
+    "tag": "Community Dispatch",
+    "author": {
+      "name": "Chinedu Eke",
+      "role": "Agritech Engineer, Akure",
+      "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
+    },
+    "published_at": "2026-09-17T15:00:00Z",
+    "read_time": "4 min read",
+    "cover_image": "https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85",
+    "image_caption": "Community solar array installation in Idanre, Ondo State. Photo: Chinedu Eke.",
+    "featured": true,
+    "quote": "When the sun powers the mill, the farmer no longer fears the fuel queue.",
+    "content": "<p class=\"lead-paragraph\">For three decades in Idanre, cocoa processing was held hostage by diesel availability. When fuel soared above ₦1,100 per liter, six community mills shuttered. Last month, our local cooperative commissioned a 45kW decentralized solar hybrid system.</p><p>The result? Milling costs dropped by 70%, and spoilage rates during the rainy season dropped to near zero. Decentralized energy is not just a climate topic; it is an immediate survival tool for Nigerian agriculture.</p>"
+  },
+  {
+    "id": "comm-002",
+    "title": "The Remote Work Reality in Ibadan: Why Tech Talent Is Migrating Away from Lagos Islands",
+    "slug": "remote-work-reality-ibadan-tech-migration",
+    "dek": "Lower rents, cleaner air, and reliable fiber optic pockets are turning Ibadan into West Africa's quiet remote engineering haven.",
+    "category": "Technology & Startups",
+    "tag": "Community Dispatch",
+    "author": {
+      "name": "Folake Adeleke",
+      "role": "Senior Frontend Developer, Ibadan",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80"
+    },
+    "published_at": "2026-09-16T12:30:00Z",
+    "read_time": "3 min read",
+    "cover_image": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=85",
+    "image_caption": "Co-working space hub in Bodija, Ibadan. Photo: F. Adeleke.",
+    "featured": false,
+    "quote": "A 2-bedroom in Bodija costs one-fourth of a studio in Lekki Phase 1, with zero traffic fatigue.",
+    "content": "<p class=\"lead-paragraph\">Two years ago, I spent three hours every single morning sitting in third mainland bridge gridlock. Today, I work for a European fintech from a garden apartment in Bodija.</p><p>With newly laid metropolitan fiber lines and community co-working spaces with 24/7 inverters, Ibadan is quietly absorbing Nigeria's top remote talent without the sensory overload of Lagos.</p>"
+  },
+  {
+    "id": "comm-003",
+    "title": "A Doctor’s Perspective: What the Brain Drain Really Looks Like on the Wards in Kano",
+    "slug": "doctors-perspective-brain-drain-kano-wards",
+    "dek": "An honest dispatch from inside a state tertiary hospital on nurse-to-patient ratios, heroic local innovations, and what needs urgent fixing.",
+    "category": "Opinion & Essays",
+    "tag": "Community Dispatch",
+    "author": {
+      "name": "Dr. Usman Danfulani",
+      "role": "Resident Physician, Kano",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    },
+    "published_at": "2026-09-15T10:00:00Z",
+    "read_time": "5 min read",
+    "cover_image": "https://images.unsplash.com/photo-1584515979956-d9f6e5d09982?auto=format&fit=crop&w=1200&q=85",
+    "image_caption": "Tertiary health center clinical corridor in Kano.",
+    "featured": false,
+    "quote": "We do not lack medical brilliance in Nigeria; we lack institutional equipment maintenance.",
+    "content": "<p class=\"lead-paragraph\">While statistics on medical migration dominate newspaper columns, the human reality inside our emergency wards is where the friction is felt most acutely.</p><p>Despite the constraints, young resident doctors and nurses are using localized telemedicine triaging and community blood donation groups to save lives every hour. We must reform domestic healthcare remuneration before the institutional knowledge completely dissipates.</p>"
+  }
+]

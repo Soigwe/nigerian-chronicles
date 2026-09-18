@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Dispatches — NAIJA CHRONICLES</title>
+  <meta name="description" content="Independent articles, citizen investigations, and economic analyses submitted by individuals across Nigeria and the Diaspora." />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: ['class', '[data-theme="dark"]'],
+      theme: {
+        extend: {
+          colors: {
+            editorial: {
+              crimson: '#b91c1c',
+              gold: '#c59b27',
+              ivory: '#fcfbf7',
+              charcoal: '#121212',
+              sand: '#f4f1ea'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Custom Editorial Styles -->
+  <link rel="stylesheet" href="assets/css/editorial.css" />
+</head>
+<body class="min-h-screen flex flex-col selection:bg-red-900 selection:text-white">
+
+  <!-- Top Reading Progress Indicator -->
+  <div id="reading-progress"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast-notification" class="fixed top-6 right-6 z-50 bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 px-5 py-3 rounded shadow-xl text-xs font-mono transition-all duration-300 transform opacity-0 translate-y-4 pointer-events-none border border-stone-700">
+    System Notification
+  </div>
+
+  <!-- HEADER & MASTHEAD -->
+  <header class="border-b border-stone-200 dark:border-stone-800 bg-[var(--bg-primary)]">
+    <!-- Top Metadata Bar -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-b border-stone-200/60 dark:border-stone-800/60 py-2 flex flex-wrap items-center justify-between text-[11px] font-mono text-stone-500">
+      <div class="flex items-center gap-4">
+        <a href="index.html" class="font-bold text-red-700 dark:text-red-400 hover:underline flex items-center gap-1">
+          ← Back to Front Page
+        </a>
+        <span>•</span>
+        <span>COMMUNITY WIRE • OPEN CITIZEN DESK</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <div id="supabase-status-badge" class="cursor-pointer" onclick="openSupabaseModal()">
+          <!-- Populated dynamically by JS -->
+        </div>
+
+        <!-- Theme Mode Switcher -->
+        <div class="flex items-center border border-stone-200 dark:border-stone-800 rounded p-0.5 bg-stone-50 dark:bg-stone-900">
+          <button onclick="setTheme('light')" data-set-theme="light" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors">Ivory</button>
+          <button onclick="setTheme('sepia')" data-set-theme="sepia" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors">Sepia</button>
+          <button onclick="setTheme('dark')" data-set-theme="dark" class="px-2 py-0.5 rounded text-[10px] font-mono transition-colors">Dark</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Masthead Brand -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 text-center relative">
+      <div class="text-[11px] font-mono tracking-[0.3em] uppercase text-stone-500 mb-2">
+        Naija Chronicles • Open Journal
+      </div>
+      
+      <h1 class="font-masthead text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-stone-950 dark:text-stone-50">
+        <a href="community.html">COMMUNITY DISPATCHES</a>
+      </h1>
+
+      <div class="flex items-center justify-center gap-6 mt-3 text-xs font-body-serif italic text-stone-600 dark:text-stone-400">
+        <span>"Independent Voices • State Ground Reports • Domain Expertise"</span>
+      </div>
+
+      <!-- Quick Submit Control -->
+      <div class="absolute right-4 sm:right-8 top-1/2 -translate-y-1/2 hidden md:flex items-center gap-3">
+        <button onclick="openCommunityPublishModal()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded text-xs font-mono font-bold uppercase tracking-wider bg-red-700 text-white hover:bg-red-800 transition-colors shadow-sm">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg> Submit Your Article
+        </button>
+      </div>
+    </div>
+
+    <!-- Category Nav Bar & Live Search -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-4 border-t border-stone-200 dark:border-stone-800">
+      <nav id="community-category-nav" class="flex items-center gap-1 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+        <!-- Rendered via JS -->
+      </nav>
+
+      <div class="flex items-center gap-2 w-full md:w-auto">
+        <div class="relative w-full md:w-72">
+          <input 
+            id="community-search-input"
+            type="text" 
+            placeholder="Search community articles, authors, states..."
+            class="w-full pl-9 pr-4 py-1.5 text-xs font-sans rounded-sm border border-stone-300 dark:border-stone-700 bg-stone-50 dark:bg-stone-900 focus:outline-none focus:border-stone-900 dark:focus:border-stone-100 text-stone-900 dark:text-stone-100 placeholder-stone-400"
+          />
+          <svg class="w-4 h-4 text-stone-400 absolute left-2.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <button onclick="openCommunityPublishModal()" class="md:hidden whitespace-nowrap px-3 py-1.5 bg-red-700 text-white text-xs font-mono rounded">
+          + Submit
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT AREA -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 w-full">
+
+    <!-- SUBMISSION CALLOUT BANNER -->
+    <div class="mb-12 p-6 sm:p-8 bg-stone-100 dark:bg-stone-900/80 rounded-sm border border-stone-200 dark:border-stone-800 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div class="max-w-2xl">
+        <span class="inline-block px-2.5 py-0.5 text-[10px] font-mono font-bold uppercase tracking-widest bg-red-700 text-white mb-2">Open Contributor Floor</span>
+        <h3 class="font-display text-2xl font-bold mb-2 text-stone-950 dark:text-stone-50">Publish Your Perspective to Naija Chronicles</h3>
+        <p class="font-body-serif text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+          Are you an engineer, doctor, farmer, lawyer, analyst, or citizen witnessing an underreported local issue or market innovation in your state? Submit your write-up directly to the public wire.
+        </p>
+      </div>
+      <button onclick="openCommunityPublishModal()" class="whitespace-nowrap px-6 py-3 bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 text-xs font-mono font-bold uppercase tracking-wider rounded-sm hover:bg-neutral-800 transition-colors shadow">
+        Write & Publish Now →
+      </button>
+    </div>
+
+    <!-- COMMUNITY DISPATCHES GRID -->
+    <div class="mb-8 flex items-center justify-between pb-3 border-b-2 border-stone-950 dark:border-stone-50">
+      <h2 class="font-display text-xl sm:text-2xl font-bold uppercase tracking-wide">
+        Published by Individuals
+      </h2>
+      <span id="community-count-label" class="font-mono text-xs text-stone-500">Showing all dispatches</span>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="community-loading" class="text-center py-12 hidden">
+      <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-stone-900 dark:border-stone-100 mb-2"></div>
+      <div class="font-mono text-xs text-stone-500">Loading community dispatches from Supabase...</div>
+    </div>
+
+    <!-- Grid Container -->
+    <div id="community-articles-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      <!-- Injected dynamically by community.js -->
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-stone-200 dark:border-stone-800 bg-[var(--bg-secondary)] mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div class="flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-stone-500 gap-4">
+        <div>
+          <strong class="text-stone-900 dark:text-stone-100 font-masthead">NAIJA CHRONICLES</strong> • Community Wire Desk
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="index.html" class="hover:underline">Front Page Wire</a>
+          <span>•</span>
+          <a href="#" onclick="openCommunityPublishModal(); return false;" class="hover:underline">Submit Article</a>
+          <span>•</span>
+          <a href="#" onclick="window.scrollTo({top:0, behavior:'smooth'}); return false;" class="hover:underline">Top ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- 1. FULL ARTICLE READER MODAL -->
+  <div id="reader-modal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm overflow-y-auto">
+    <div class="min-h-screen px-4 text-center">
+      <div class="fixed inset-0" onclick="closeReaderModal()"></div>
+
+      <div class="inline-block w-full max-w-4xl p-6 sm:p-10 my-8 text-left align-middle transition-all transform bg-[var(--bg-primary)] shadow-2xl rounded-sm border border-stone-200 dark:border-stone-800 relative z-10 modal-enter">
+        <button onclick="closeReaderModal()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-600 dark:text-stone-300 transition-colors">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <div id="reader-article-content"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. INDIVIDUAL ARTICLE SUBMISSION MODAL -->
+  <div id="community-publish-modal" class="hidden fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-[var(--bg-primary)] rounded-sm border border-stone-200 dark:border-stone-800 max-w-2xl w-full p-6 sm:p-8 shadow-2xl modal-enter relative my-8">
+      <button onclick="closeCommunityPublishModal()" class="absolute top-4 right-4 text-stone-400 hover:text-stone-700 dark:hover:text-stone-200">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+
+      <div class="flex items-center gap-2 mb-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+        <h3 class="font-display text-2xl font-bold">Submit Your Article</h3>
+      </div>
+      <p class="text-xs text-stone-600 dark:text-stone-400 mb-6 font-sans">
+        Publish your ground report, economic insight, or technical analysis directly to the Community Wire.
+      </p>
+
+      <form id="community-form" onsubmit="handleCommunitySubmit(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Article Title / Headline *</label>
+          <input name="title" required placeholder="e.g. How Solar Mini-Grids Are Powering Cocoa Processing in Ondo" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-red-600" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Brief Summary / Deck (1-2 sentences) *</label>
+          <textarea name="dek" required rows="2" placeholder="Summary of what your article covers and why it matters..." class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-red-600"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Your Full Name / Pen Name *</label>
+            <input name="author_name" required placeholder="e.g. Chinedu Eke" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Your Location / City *</label>
+            <input name="author_role" required placeholder="e.g. Agritech Engineer, Akure" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Category *</label>
+            <select name="category" class="w-full px-3 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100">
+              <option value="Economy & Business">Economy & Business</option>
+              <option value="Technology & Startups">Technology & Startups</option>
+              <option value="Local Governance & States">Local Governance & States</option>
+              <option value="Opinion & Essays">Opinion & Essays</option>
+              <option value="Culture & Life">Culture & Life</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Estimated Read Time</label>
+            <input name="read_time" placeholder="e.g. 4 min read" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Cover Image URL (Optional)</label>
+          <input name="cover_image" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Pull Quote / Key Takeaway (Optional)</label>
+          <input name="quote" placeholder="Memorable one-line quote..." class="w-full px-3.5 py-2 text-xs font-serif italic rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Article Body (Paragraphs / HTML supported) *</label>
+          <textarea name="content" required rows="7" placeholder="Write your full story here..." class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-3 pt-4 border-t border-stone-200 dark:border-stone-800">
+          <button type="button" onclick="closeCommunityPublishModal()" class="px-4 py-2 text-xs font-mono text-stone-500 hover:text-stone-800 dark:hover:text-stone-200">
+            Cancel
+          </button>
+          <button type="submit" class="px-6 py-2 text-xs font-mono font-bold uppercase tracking-wider bg-red-700 text-white rounded hover:bg-red-800 transition-colors">
+            Publish to Community Wire
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript for Community Page -->
+  <script src="assets/js/community.js"></script>
+</body>
+</html>
