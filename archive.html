@@ -130,7 +130,7 @@
 
     document.addEventListener('DOMContentLoaded', async () => {
       try {
-        const res = await fetch('assets/data/sample_articles.json');
+        const res = await fetch('assets/data/sample_articles.json?_v=' + Date.now(), { cache: 'no-store' });
         if (res.ok) {
           archiveArticles = await res.json();
         }

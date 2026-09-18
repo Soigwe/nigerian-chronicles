@@ -31,8 +31,8 @@ function setTheme(newTheme) {
 }
 
 function initCommunitySupabase() {
-  const url = localStorage.getItem('chronicle_supabase_url');
-  const key = localStorage.getItem('chronicle_supabase_key');
+  const url = (window.CHRONICLE_CONFIG && window.CHRONICLE_CONFIG.supabaseUrl) || localStorage.getItem('chronicle_supabase_url');
+  const key = (window.CHRONICLE_CONFIG && window.CHRONICLE_CONFIG.supabaseAnonKey) || localStorage.getItem('chronicle_supabase_key');
   const badge = document.getElementById('supabase-status-badge');
 
   if (url && key && window.supabase) {
@@ -77,9 +77,9 @@ async function loadCommunityArticles() {
     }
   }
 
-  // 2. Fallback to local community articles dataset
+  // 2. Fallback to local community articles dataset (with cache-busting)
   try {
-    const res = await fetch('assets/data/community_articles.json');
+    const res = await fetch('assets/data/community_articles.json?_v=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       communityState.articles = data.map(normalizeCommunityArticle);

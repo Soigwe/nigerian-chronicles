@@ -16,8 +16,8 @@ const state = {
   readerFont: localStorage.getItem('the_chronicle_reader_font') || 'serif',
   supabase: null,
   supabaseConfig: {
-    url: localStorage.getItem('chronicle_supabase_url') || '',
-    key: localStorage.getItem('chronicle_supabase_key') || ''
+    url: (window.CHRONICLE_CONFIG && window.CHRONICLE_CONFIG.supabaseUrl) || localStorage.getItem('chronicle_supabase_url') || '',
+    key: (window.CHRONICLE_CONFIG && window.CHRONICLE_CONFIG.supabaseAnonKey) || localStorage.getItem('chronicle_supabase_key') || ''
   },
   isPlayingAudio: false,
   speechSynth: window.speechSynthesis || null,
@@ -113,9 +113,9 @@ async function loadArticles() {
     }
   }
 
-  // Fallback to local sample dataset
+  // Fallback to local sample dataset (with cache-busting to ensure instant updates)
   try {
-    const res = await fetch('assets/data/sample_articles.json');
+    const res = await fetch('assets/data/sample_articles.json?_v=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       state.articles = data.map(normalizeArticleData);
