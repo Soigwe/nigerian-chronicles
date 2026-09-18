@@ -1,4 +1,4 @@
-# NIGERIAN CHRONICLES (Digital Editorial Magazine)
+# NAIJA CHRONICLES (Digital Editorial Magazine)
 
 > **An Independent Journal of Architecture, Geopolitics, Culture, and Contemporary African Thought.**
 
