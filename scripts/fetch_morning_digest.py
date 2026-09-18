@@ -250,8 +250,8 @@ def generate_curated_editorial_magazine(rss_items):
     return [art_lead, art_hidden, art_mobility, art_world]
 
 def sync_to_supabase_if_configured(articles):
-    supabase_url = os.environ.get("SUPABASE_URL", "")
-    supabase_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or os.environ.get("SUPABASE_ANON_KEY") or os.environ.get("SUPABASE_KEY", "")
+    supabase_url = os.environ.get("SUPABASE_URL") or "https://ovndvemjdojlibawdcmk.supabase.co"
+    supabase_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY") or os.environ.get("SUPABASE_ANON_KEY") or "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92bmR2ZW1qZG9qbGliYXdkY21rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2ODcxNTIsImV4cCI6MjEwNTI2MzE1Mn0.p_27320XWWY1ATSHNFa7jb74ZtR7i2FhQgm97No3Jj4"
     
     if not supabase_url or not supabase_key:
         return False
