@@ -407,10 +407,13 @@ function renderCategoryTabs() {
 
   const categories = [
     { id: 'all', label: 'Front Page' },
-    { id: 'Architecture & Design', label: 'Architecture & Design' },
-    { id: 'Technology & Science', label: 'Technology & Science' },
-    { id: 'Culture & Style', label: 'Culture & Style' },
-    { id: 'Global Economy', label: 'Global Economy' }
+    { id: 'Stocks & Money', label: 'Stocks & Money' },
+    { id: 'Hidden Wire', label: 'Hidden Wire' },
+    { id: 'Passports & Mobility', label: 'Passports & Mobility' },
+    { id: 'Politics & Governance', label: 'Politics & Governance' },
+    { id: 'Technology & Startups', label: 'Technology & Startups' },
+    { id: 'Culture & Entertainment', label: 'Culture & Entertainment' },
+    { id: 'World & Macro', label: 'World & Macro' }
   ];
 
   container.innerHTML = categories.map(cat => {
