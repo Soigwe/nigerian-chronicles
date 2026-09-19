@@ -304,10 +304,14 @@ function normalizeCommunityArticle(item) {
     dek: item.dek || '',
     category: item.category || 'General',
     tag: item.tag || 'Community Dispatch',
-    author: typeof item.author === 'object' ? item.author : {
+    author: typeof item.author === 'object' ? {
+      name: item.author.name || 'Anonymous Contributor',
+      role: item.author.role || 'Citizen Journalist',
+      avatar: normalizeImageUrl(item.author.avatar)
+    } : {
       name: item.author_name || 'Anonymous Contributor',
       role: item.author_role || 'Citizen Journalist',
-      avatar: item.author_avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+      avatar: normalizeImageUrl(item.author_avatar)
     },
     published_at: item.published_at || item.created_at || new Date().toISOString(),
     read_time: item.read_time || '4 min read',

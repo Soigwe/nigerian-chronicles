@@ -219,10 +219,14 @@ function normalizeArticleData(item) {
     dek: item.dek || item.summary || '',
     category: item.category || 'General',
     tag: item.tag || 'Dispatch',
-    author: typeof item.author === 'object' ? item.author : {
+    author: typeof item.author === 'object' ? {
+      name: item.author.name || 'The Naija Chronicles Desk',
+      role: item.author.role || 'Staff Correspondent',
+      avatar: normalizeImageUrl(item.author.avatar)
+    } : {
       name: item.author_name || item.author || 'The Naija Chronicles Desk',
       role: item.author_role || 'Staff Correspondent',
-      avatar: item.author_avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
+      avatar: normalizeImageUrl(item.author_avatar)
     },
     published_at: item.published_at || item.created_at || new Date().toISOString(),
     read_time: item.read_time || '5 min read',
