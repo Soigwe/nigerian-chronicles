@@ -114,7 +114,7 @@ async function loadCommunityArticles() {
 
 function normalizeImageUrl(rawUrl) {
   if (!rawUrl || typeof rawUrl !== 'string') {
-    return 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85';
+    return 'https://lh3.googleusercontent.com/d/1PsLAfyGMvikdseyvv6nCCrznqg762pDt';
   }
 
   let url = rawUrl.trim();
@@ -424,8 +424,28 @@ function renderCommunityCategoryNav() {
 }
 
 function selectCommunityCategory(catId) {
-  communityState.selectedCategory = catId;
-  renderCommunityAll();
+  if (communityState.selectedCategory === catId) return;
+
+  const stage = document.getElementById('community-editorial-stage');
+  if (stage) {
+    stage.classList.remove('page-flipping-in');
+    stage.classList.add('page-flipping-out');
+
+    setTimeout(() => {
+      communityState.selectedCategory = catId;
+      renderCommunityAll();
+
+      stage.classList.remove('page-flipping-out');
+      stage.classList.add('page-flipping-in');
+
+      setTimeout(() => {
+        stage.classList.remove('page-flipping-in');
+      }, 300);
+    }, 200);
+  } else {
+    communityState.selectedCategory = catId;
+    renderCommunityAll();
+  }
 }
 
 function initCommunitySearch() {

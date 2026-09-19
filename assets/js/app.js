@@ -156,7 +156,7 @@ async function loadArticles() {
 
 function normalizeImageUrl(rawUrl) {
   if (!rawUrl || typeof rawUrl !== 'string') {
-    return 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';
+    return 'https://lh3.googleusercontent.com/d/1PsLAfyGMvikdseyvv6nCCrznqg762pDt';
   }
 
   let url = rawUrl.trim();
@@ -558,8 +558,31 @@ function renderCategoryTabs() {
 }
 
 function selectCategory(catId) {
-  state.selectedCategory = catId;
-  renderAll();
+  if (state.selectedCategory === catId) return;
+
+  const stage = document.getElementById('main-editorial-stage');
+  if (stage) {
+    // 1. Tactile 3D page flip out
+    stage.classList.remove('page-flipping-in');
+    stage.classList.add('page-flipping-out');
+
+    setTimeout(() => {
+      // 2. Render new topic content at the page fold apex
+      state.selectedCategory = catId;
+      renderAll();
+
+      // 3. Complete 3D page flip in
+      stage.classList.remove('page-flipping-out');
+      stage.classList.add('page-flipping-in');
+
+      setTimeout(() => {
+        stage.classList.remove('page-flipping-in');
+      }, 300);
+    }, 200);
+  } else {
+    state.selectedCategory = catId;
+    renderAll();
+  }
 }
 
 // Search Handler
