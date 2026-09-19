@@ -20,23 +20,23 @@ SSH_KEY = "/workspace/.ssh/id_ed25519"
 # Curated High-Relevance Nigerian Editorial Photo Bank
 AUTHENTIC_TOPIC_IMAGES = {
     "politics_national_assembly": {
-        "url": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1600&q=85",
+        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
         "caption": "The National Assembly complex in Abuja during legislative policy debates."
     },
     "politics_tax_reforms": {
-        "url": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=85",
         "caption": "Fiscal policy and tax reform legislative draft documents in Abuja."
     },
     "dangote_refinery": {
-        "url": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=85",
+        "url": "https://lh3.googleusercontent.com/d/10-TUNlPMqxhMvZDTeDA2gajWMq53Dn9R",
         "caption": "Heavy crude petroleum distillation towers at the Lekki Free Zone Industrial Complex."
     },
     "banking_recapitalization": {
-        "url": "https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=85",
         "caption": "Equities and bank stock trading analytics on the Nigerian Exchange (NGX)."
     },
     "electricity_power_tariffs": {
-        "url": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=85",
         "caption": "High-voltage electricity distribution transformer substation in Ikeja, Lagos."
     },
     "solid_minerals_mining": {
@@ -44,7 +44,7 @@ AUTHENTIC_TOPIC_IMAGES = {
         "caption": "Artisanal lithium and solid mineral excavation site in Central Nigeria."
     },
     "global_passports_mobility": {
-        "url": "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=85",
         "caption": "International travel transit terminal and biometric passport documentation."
     },
     "datacenter_localisation": {
@@ -52,19 +52,19 @@ AUTHENTIC_TOPIC_IMAGES = {
         "caption": "Tier-4 hyperscale optical fiber server racks in Victoria Island, Lagos."
     },
     "african_ai_engineers": {
-        "url": "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
         "caption": "Nigerian machine learning engineers collaborating on indigenous language tokenizers in Yaba."
     },
     "global_macro_inflation": {
-        "url": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=85",
         "caption": "Global currency foreign exchange (FX) and commodity trading indexes."
     },
     "nollywood_cinema": {
-        "url": "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?auto=format&fit=crop&w=1200&q=85",
         "caption": "Cinema film camera on movie production set on location in Lagos."
     },
     "lekki_deep_sea_port": {
-        "url": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://lh3.googleusercontent.com/d/10-TUNlPMqxhMvZDTeDA2gajWMq53Dn9R",
         "caption": "Automated post-panamax container gantry cranes operating at Lekki Deep Sea Port, Lagos."
     }
 }
