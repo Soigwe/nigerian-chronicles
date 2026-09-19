@@ -563,20 +563,63 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Cover Image URL</label>
-            <input name="cover_image" placeholder="https://images.unsplash.com/photo-..." class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+        <div>
+          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-2">Cover Photo (From Drive / Device or Link)</label>
+          <div class="flex items-center gap-2 mb-3 border-b border-stone-200 dark:border-stone-800 pb-2">
+            <button type="button" onclick="switchEditorialImageTab('file')" id="edit-img-tab-file" class="px-3 py-1 rounded text-xs font-mono font-bold bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 transition-colors">
+              📁 Upload from Device / Drive
+            </button>
+            <button type="button" onclick="switchEditorialImageTab('url')" id="edit-img-tab-url" class="px-3 py-1 rounded text-xs font-mono text-stone-500 hover:text-stone-900 dark:hover:text-stone-200 transition-colors">
+              🔗 Google Drive / Web Link
+            </button>
           </div>
+
+          <div id="edit-image-file-section" class="space-y-2">
+            <div class="border-2 border-dashed border-stone-300 dark:border-stone-700 rounded p-4 text-center hover:border-red-600 transition-colors bg-stone-50 dark:bg-stone-900/40">
+              <input type="file" id="editorial-file-picker" accept="image/*" onchange="handleEditorialFileSelect(this)" class="hidden" />
+              <label for="editorial-file-picker" class="cursor-pointer flex flex-col items-center justify-center">
+                <svg class="w-8 h-8 text-stone-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                <span class="text-xs font-mono font-bold text-stone-800 dark:text-stone-200">Click to choose photo from your Computer / Phone Drive</span>
+                <span class="text-[11px] font-sans text-stone-400 mt-0.5">PNG, JPG, WEBP • Auto-compressed &amp; optimized</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="edit-image-url-section" class="hidden space-y-2">
+            <input 
+              id="editorial-cover-input" 
+              name="cover_image" 
+              placeholder="e.g. https://drive.google.com/file/d/... or https://i.ibb.co/..." 
+              oninput="previewEditorialImage(this.value)"
+              class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-red-600" 
+            />
+            <div class="text-[11px] font-sans text-stone-500 dark:text-stone-400">
+              💡 <strong>Google Drive:</strong> Paste your sharing link (ensure permission is set to <em>'Anyone with link can view'</em>).
+            </div>
+          </div>
+
+          <input type="hidden" id="editorial-final-cover" name="final_cover_image" value="" />
+          
+          <div id="edit-preview-container" class="mt-3 hidden p-3 rounded border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50">
+            <div class="text-[10px] font-mono uppercase tracking-wider text-stone-500 mb-1.5 flex items-center justify-between">
+              <span id="edit-preview-status" class="text-emerald-600 font-bold">✓ Photo Selected</span>
+              <button type="button" onclick="clearEditorialImage()" class="text-red-600 hover:underline font-mono text-[10px]">Remove Photo</button>
+            </div>
+            <div class="aspect-[16/9] w-full max-h-48 overflow-hidden rounded bg-stone-200 dark:bg-stone-800">
+              <img id="edit-preview-element" src="" alt="Preview" class="w-full h-full object-cover" />
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Read Time</label>
             <input name="read_time" placeholder="e.g. 4 min read" class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
           </div>
-        </div>
-
-        <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Verified Sources Credit</label>
-          <input name="image_caption" placeholder="Verified Sources: Premium Times, Vanguard, Punch." class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+          <div>
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Verified Sources Credit</label>
+            <input name="image_caption" placeholder="Verified Sources: Premium Times, Vanguard, Punch." class="w-full px-3.5 py-2 text-xs font-sans rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+          </div>
         </div>
 
         <div>

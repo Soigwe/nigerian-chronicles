@@ -145,6 +145,96 @@ function normalizeImageUrl(rawUrl) {
   return url;
 }
 
+let activeImageTab = 'file';
+let selectedImageDataUrl = '';
+
+function switchImageTab(tab) {
+  activeImageTab = tab;
+  const fileSection = document.getElementById('image-upload-file-section');
+  const urlSection = document.getElementById('image-upload-url-section');
+  const tabFileBtn = document.getElementById('img-tab-file');
+  const tabUrlBtn = document.getElementById('img-tab-url');
+
+  if (tab === 'file') {
+    fileSection?.classList.remove('hidden');
+    urlSection?.classList.add('hidden');
+    tabFileBtn?.classList.add('bg-neutral-900', 'text-white', 'dark:bg-stone-100', 'dark:text-neutral-900', 'font-bold');
+    tabFileBtn?.classList.remove('text-stone-500');
+    tabUrlBtn?.classList.remove('bg-neutral-900', 'text-white', 'dark:bg-stone-100', 'dark:text-neutral-900', 'font-bold');
+    tabUrlBtn?.classList.add('text-stone-500');
+  } else {
+    fileSection?.classList.add('hidden');
+    urlSection?.classList.remove('hidden');
+    tabUrlBtn?.classList.add('bg-neutral-900', 'text-white', 'dark:bg-stone-100', 'dark:text-neutral-900', 'font-bold');
+    tabUrlBtn?.classList.remove('text-stone-500');
+    tabFileBtn?.classList.remove('bg-neutral-900', 'text-white', 'dark:bg-stone-100', 'dark:text-neutral-900', 'font-bold');
+    tabFileBtn?.classList.add('text-stone-500');
+  }
+}
+
+function handleImageFileSelect(input) {
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Compress & scale to max 1200px width for fast loading
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      const maxDim = 1200;
+
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      // Export as high-quality compressed JPEG Data URL
+      selectedImageDataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      
+      const container = document.getElementById('image-preview-container');
+      const imgEl = document.getElementById('image-preview-element');
+      const statusEl = document.getElementById('image-preview-status');
+      const hiddenInput = document.getElementById('final-cover-image');
+
+      if (hiddenInput) hiddenInput.value = selectedImageDataUrl;
+      if (imgEl) imgEl.src = selectedImageDataUrl;
+      if (statusEl) {
+        statusEl.textContent = `✓ Uploaded from Drive (${Math.round(selectedImageDataUrl.length / 1024)} KB)`;
+        statusEl.className = 'text-emerald-600 font-bold';
+      }
+      if (container) container.classList.remove('hidden');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearSelectedImage() {
+  selectedImageDataUrl = '';
+  const filePicker = document.getElementById('community-file-picker');
+  const urlInput = document.getElementById('community-cover-input');
+  const hiddenInput = document.getElementById('final-cover-image');
+  const container = document.getElementById('image-preview-container');
+
+  if (filePicker) filePicker.value = '';
+  if (urlInput) urlInput.value = '';
+  if (hiddenInput) hiddenInput.value = '';
+  if (container) container.classList.add('hidden');
+}
+
 function previewCommunityImage(rawUrl) {
   const container = document.getElementById('image-preview-container');
   const imgEl = document.getElementById('image-preview-element');
@@ -344,7 +434,7 @@ async function handleCommunitySubmit(event) {
     author_name: form.author_name.value.trim(),
     author_role: form.author_role.value.trim(),
     author_avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
-    cover_image: form.cover_image.value.trim() || 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85',
+    cover_image: selectedImageDataUrl || normalizeImageUrl(form.cover_image?.value || form.final_cover_image?.value || ''),
     image_caption: `Submitted by ${form.author_name.value.trim()}`,
     read_time: form.read_time.value.trim() || '4 min read',
     quote: form.quote.value.trim() || '',
