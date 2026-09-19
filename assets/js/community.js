@@ -18,7 +18,28 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadCommunityArticles();
   renderCommunityAll();
   initCommunitySearch();
+  handleCommunityDeepLinkRouter();
 });
+
+function handleCommunityDeepLinkRouter() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('article') || params.get('slug') || params.get('id') || window.location.hash.replace('#', '');
+  
+  if (slug) {
+    const matched = communityState.articles.find(a => a.slug === slug || a.id === slug);
+    if (matched) {
+      setTimeout(() => openCommunityReader(matched.id), 100);
+    }
+  }
+
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.slug) {
+      openCommunityReader(event.state.slug);
+    } else {
+      closeReaderModal();
+    }
+  });
+}
 
 function initCommunityTheme() {
   document.documentElement.setAttribute('data-theme', communityState.theme);
@@ -466,54 +487,68 @@ async function handleCommunitySubmit(event) {
 }
 
 function openCommunityReader(articleId) {
-  const article = communityState.articles.find(a => a.id === articleId);
+  const article = communityState.articles.find(a => a.id === articleId || a.slug === articleId);
   if (!article) return;
 
   const modal = document.getElementById('reader-modal');
   const bodyEl = document.getElementById('reader-article-content');
   if (!modal || !bodyEl) return;
 
+  const articleUrl = window.location.origin + window.location.pathname + '?article=' + article.slug;
+  window.history.pushState({ articleId: article.id, slug: article.slug }, article.title, '?article=' + article.slug);
+  document.title = article.title + ' — Community Wire • NAIJA CHRONICLES';
+
   bodyEl.innerHTML = `
-    <div class="max-w-3xl mx-auto py-6">
-      <div class="flex items-center gap-3 mb-4">
+    <div class="max-w-3xl mx-auto py-4 sm:py-6 px-1 sm:px-0">
+      <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
         <span class="px-2.5 py-0.5 text-xs font-mono font-bold tracking-widest uppercase bg-red-700 text-white">Community Dispatch</span>
         <span class="text-xs font-mono text-stone-500 uppercase">${article.category}</span>
         <span class="text-xs font-mono text-stone-400">•</span>
         <span class="text-xs font-mono text-stone-500">${article.read_time}</span>
       </div>
 
-      <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4 text-stone-900 dark:text-stone-100">
+      <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3 sm:mb-4 text-stone-900 dark:text-stone-100">
         ${article.title}
       </h1>
 
-      <p class="font-body-serif text-lg text-stone-600 dark:text-stone-300 leading-relaxed mb-6 italic">
+      <p class="font-body-serif text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed mb-4 sm:mb-6 italic">
         ${article.dek}
       </p>
 
-      <div class="flex items-center justify-between border-t border-b border-stone-200 dark:border-stone-800 py-4 my-6">
+      <div class="flex items-center justify-between border-t border-b border-stone-200 dark:border-stone-800 py-3 sm:py-4 my-4 sm:my-6">
         <div class="flex items-center gap-3">
-          <img src="${article.author.avatar}" alt="${article.author.name}" class="w-10 h-10 rounded-full object-cover" />
+          <img src="${article.author.avatar}" alt="${article.author.name}" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover" />
           <div>
-            <div class="font-sans font-semibold text-sm text-stone-900 dark:text-stone-100">${article.author.name}</div>
-            <div class="font-sans text-xs text-stone-500">${article.author.role} • ${new Date(article.published_at).toLocaleDateString()}</div>
+            <div class="font-sans font-semibold text-xs sm:text-sm text-stone-900 dark:text-stone-100">${article.author.name}</div>
+            <div class="font-sans text-[11px] text-stone-500">${article.author.role} • ${new Date(article.published_at).toLocaleDateString()}</div>
           </div>
         </div>
       </div>
 
-      <div class="image-editorial-frame aspect-[16/9] w-full rounded-sm mb-6 border border-stone-200 dark:border-stone-800">
-        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" />
+      <div class="image-editorial-frame aspect-[16/9] w-full rounded-sm mb-4 sm:mb-6 border border-stone-200 dark:border-stone-800">
+        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85';" />
       </div>
 
-      ${article.quote ? `<div class="editorial-quote my-6">${article.quote}</div>` : ''}
+      ${article.quote ? `<div class="editorial-quote my-4 sm:my-6 text-base sm:text-xl">${article.quote}</div>` : ''}
 
-      <div class="article-rich-body drop-cap text-stone-800 dark:text-stone-200">
+      <div class="article-rich-body drop-cap text-stone-800 dark:text-stone-200 text-base sm:text-lg">
         ${article.content}
       </div>
 
-      <div class="border-t border-stone-200 dark:border-stone-800 pt-8 mt-12 flex items-center justify-between">
-        <div class="font-mono text-xs text-stone-500">COMMUNITY WIRE SUBMISSION</div>
-        <button onclick="closeReaderModal()" class="px-4 py-2 text-xs font-sans font-semibold uppercase tracking-wider bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 rounded-sm">
-          Close Reader
+      <!-- Share Bar -->
+      <div class="my-6 p-4 bg-stone-100 dark:bg-stone-900 rounded border border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+        <span class="text-xs font-mono font-bold uppercase">Share This Ground Report:</span>
+        <div class="flex items-center gap-2 flex-wrap">
+          <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + '\n\nRead on Naija Chronicles:\n' + articleUrl)}" target="_blank" class="flex-1 sm:flex-initial text-center px-3.5 py-1.5 rounded text-xs font-mono font-bold bg-emerald-600 text-white hover:bg-emerald-700">WhatsApp</a>
+          <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(articleUrl)}" target="_blank" class="flex-1 sm:flex-initial text-center px-3.5 py-1.5 rounded text-xs font-mono font-bold bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900">X</a>
+          <button onclick="copyCommunityLink('${article.slug}')" class="flex-1 sm:flex-initial px-3.5 py-1.5 rounded text-xs font-mono border border-stone-300 dark:border-stone-700">Copy Link</button>
+        </div>
+      </div>
+
+      <div class="border-t border-stone-200 dark:border-stone-800 pt-6 mt-6 flex items-center justify-between">
+        <div class="font-mono text-[10px] sm:text-xs text-stone-500">COMMUNITY WIRE REF: ${article.slug.toUpperCase()}</div>
+        <button onclick="closeReaderModal()" class="px-5 py-2 text-xs font-mono font-bold uppercase tracking-wider bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 rounded-sm">
+          Close ✕
         </button>
       </div>
     </div>
@@ -523,10 +558,21 @@ function openCommunityReader(articleId) {
   document.body.style.overflow = 'hidden';
 }
 
+function copyCommunityLink(slug) {
+  const url = window.location.origin + window.location.pathname + '?article=' + slug;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showCommunityToast('Direct article link copied!'));
+  } else {
+    prompt('Copy link:', url);
+  }
+}
+
 function closeReaderModal() {
   const modal = document.getElementById('reader-modal');
   if (modal) modal.classList.add('hidden');
   document.body.style.overflow = '';
+  window.history.pushState({}, 'Community Dispatches', window.location.pathname);
+  document.title = 'Community Dispatches — NAIJA CHRONICLES';
 }
 
 function showCommunityToast(msg) {

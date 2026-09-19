@@ -33,7 +33,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadArticles();
   renderAll();
   initReadingProgressBar();
+  handleDeepLinkRouter();
 });
+
+// Deep-Link URL Router for direct article sharing
+function handleDeepLinkRouter() {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('article') || params.get('slug') || params.get('id') || window.location.hash.replace('#', '');
+  
+  if (slug) {
+    const matched = state.articles.find(a => a.slug === slug || a.id === slug);
+    if (matched) {
+      setTimeout(() => openReaderModal(matched.id), 100);
+    }
+  }
+
+  // Handle browser Back / Forward buttons
+  window.addEventListener('popstate', (event) => {
+    if (event.state && event.state.slug) {
+      openReaderModal(event.state.slug);
+    } else {
+      const modal = document.getElementById('reader-modal');
+      if (modal && !modal.classList.contains('hidden')) {
+        closeReaderModal();
+      }
+    }
+  });
+}
 
 // Theme Management
 function initTheme() {
@@ -534,7 +560,7 @@ function handleSearch(query) {
 
 // Reader View Modal
 function openReaderModal(articleId) {
-  const article = state.articles.find(a => a.id === articleId);
+  const article = state.articles.find(a => a.id === articleId || a.slug === articleId);
   if (!article) return;
 
   state.currentArticle = article;
@@ -542,37 +568,42 @@ function openReaderModal(articleId) {
   const bodyEl = document.getElementById('reader-article-content');
   if (!modal || !bodyEl) return;
 
+  // Deep-Link URL for direct sharing
+  const articleUrl = window.location.origin + window.location.pathname + '?article=' + article.slug;
+  window.history.pushState({ articleId: article.id, slug: article.slug }, article.title, '?article=' + article.slug);
+  document.title = article.title + ' — NAIJA CHRONICLES';
+
   const isBookmarked = state.bookmarks.some(b => b.id === article.id);
 
   bodyEl.innerHTML = `
-    <div class="max-w-3xl mx-auto py-8">
-      <div class="flex items-center gap-3 mb-4">
+    <div class="max-w-3xl mx-auto py-4 sm:py-8 px-1 sm:px-0">
+      <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4 flex-wrap">
         <span class="px-2.5 py-0.5 text-xs font-mono font-bold tracking-widest uppercase bg-neutral-950 text-neutral-50 dark:bg-neutral-100 dark:text-neutral-900">${article.tag || 'Dispatch'}</span>
-        <span class="text-xs font-mono text-stone-500 uppercase">${article.category}</span>
+        <span class="text-xs font-mono text-red-700 dark:text-red-400 font-bold uppercase">${article.category}</span>
         <span class="text-xs font-mono text-stone-400">•</span>
         <span class="text-xs font-mono text-stone-500">${article.read_time}</span>
       </div>
 
-      <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4 text-stone-900 dark:text-stone-100">
+      <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-3 sm:mb-4 text-stone-900 dark:text-stone-100">
         ${article.title}
       </h1>
 
-      <p class="font-body-serif text-lg sm:text-xl text-stone-600 dark:text-stone-300 leading-relaxed mb-6 italic">
+      <p class="font-body-serif text-base sm:text-xl text-stone-600 dark:text-stone-300 leading-relaxed mb-4 sm:mb-6 italic">
         ${article.dek}
       </p>
 
-      <div class="flex items-center justify-between border-t border-b border-stone-200 dark:border-stone-800 py-4 my-6">
+      <div class="flex items-center justify-between border-t border-b border-stone-200 dark:border-stone-800 py-3 sm:py-4 my-4 sm:my-6 flex-wrap gap-3">
         <div class="flex items-center gap-3">
-          <img src="${article.author.avatar}" alt="${article.author.name}" class="w-10 h-10 rounded-full object-cover" />
+          <img src="${article.author.avatar}" alt="${article.author.name}" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover" />
           <div>
-            <div class="font-sans font-semibold text-sm text-stone-900 dark:text-stone-100">${article.author.name}</div>
-            <div class="font-sans text-xs text-stone-500">${article.author.role} • ${formatDate(article.published_at)}</div>
+            <div class="font-sans font-semibold text-xs sm:text-sm text-stone-900 dark:text-stone-100">${article.author.name}</div>
+            <div class="font-sans text-[11px] text-stone-500">${article.author.role} • ${formatDate(article.published_at)}</div>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
           <button onclick="playArticleAudio('${article.id}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-sans font-medium bg-stone-100 dark:bg-stone-800 hover:bg-red-50 dark:hover:bg-red-950/40 text-stone-800 dark:text-stone-200 hover:text-red-700 dark:hover:text-red-400 transition-colors">
-            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> Narration
+            <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> <span>Listen</span>
           </button>
           <button onclick="toggleBookmark('${article.id}')" class="p-2 rounded-full hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors" title="Bookmark">
             <svg class="w-4 h-4 ${isBookmarked ? 'fill-red-600 text-red-600' : 'text-stone-600 dark:text-stone-300'}" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
@@ -580,49 +611,49 @@ function openReaderModal(articleId) {
         </div>
       </div>
 
-      <div class="image-editorial-frame aspect-[16/9] w-full rounded-sm mb-4 border border-stone-200 dark:border-stone-800">
-        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" />
+      <div class="image-editorial-frame aspect-[16/9] w-full rounded-sm mb-3 sm:mb-4 border border-stone-200 dark:border-stone-800">
+        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';" />
       </div>
-      ${article.image_caption ? `<p class="font-mono text-xs text-stone-500 dark:text-stone-400 mb-8 italic">${article.image_caption}</p>` : ''}
+      ${article.image_caption ? `<p class="font-mono text-[11px] text-stone-500 dark:text-stone-400 mb-6 sm:mb-8 italic">${article.image_caption}</p>` : ''}
 
       ${article.quote ? `
-        <div class="editorial-quote my-8">
+        <div class="editorial-quote my-6 sm:my-8 text-base sm:text-2xl">
           ${article.quote}
         </div>
       ` : ''}
 
-      <div id="reader-body-text" class="article-rich-body drop-cap text-stone-800 dark:text-stone-200">
+      <div id="reader-body-text" class="article-rich-body drop-cap text-stone-800 dark:text-stone-200 text-base sm:text-lg">
         ${article.content || `<p class="lead-paragraph">${article.dek}</p><p>Full content dispatch transmitted from the Lagos editorial bureau.</p>`}
       </div>
 
-      <!-- Social Outreach & Share Ribbon -->
-      <div class="my-8 p-4 sm:p-5 bg-stone-100/80 dark:bg-stone-900/80 rounded border border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <!-- Social Outreach & Share Ribbon (Deep-Linked to This Exact Article) -->
+      <div class="my-6 sm:my-8 p-4 sm:p-5 bg-stone-100/90 dark:bg-stone-900/90 rounded border border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div class="text-xs font-mono">
-          <span class="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider block sm:inline">Spread the Truth:</span>
-          <span class="text-stone-500 hidden sm:inline">Share this intelligence dispatch</span>
+          <span class="font-bold text-stone-900 dark:text-stone-100 uppercase tracking-wider block">Share This Article:</span>
+          <span class="text-stone-500 text-[11px]">Direct deep-link for WhatsApp &amp; socials</span>
         </div>
         <div class="flex items-center gap-2 flex-wrap">
-          <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + ' — ' + window.location.href)}" target="_blank" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center gap-1.5 shadow-sm">
+          <a href="https://api.whatsapp.com/send?text=${encodeURIComponent(article.title + '\n\nRead the full report on Naija Chronicles:\n' + articleUrl)}" target="_blank" class="flex-1 sm:flex-initial text-center px-3.5 py-2 rounded text-xs font-mono font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition-colors flex items-center justify-center gap-1.5 shadow-sm">
             WhatsApp
           </a>
-          <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(window.location.href)}" target="_blank" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 hover:opacity-90 transition-colors flex items-center gap-1.5 shadow-sm">
+          <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(articleUrl)}&via=NaijaChronicles" target="_blank" class="flex-1 sm:flex-initial text-center px-3.5 py-2 rounded text-xs font-mono font-bold bg-neutral-900 text-white dark:bg-stone-100 dark:text-neutral-900 hover:opacity-90 transition-colors flex items-center justify-center gap-1.5 shadow-sm">
             Post on X
           </a>
-          <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}" target="_blank" class="px-3 py-1.5 rounded text-xs font-mono font-bold bg-blue-700 text-white hover:bg-blue-800 transition-colors flex items-center gap-1.5 shadow-sm">
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(articleUrl)}" target="_blank" class="hidden md:inline-flex px-3.5 py-2 rounded text-xs font-mono font-bold bg-blue-700 text-white hover:bg-blue-800 transition-colors items-center gap-1.5 shadow-sm">
             LinkedIn
           </a>
-          <button onclick="copyArticleLink('${article.slug}')" class="px-3 py-1.5 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition-colors">
+          <button onclick="copyArticleDirectLink('${article.slug}')" class="flex-1 sm:flex-initial px-3.5 py-2 rounded text-xs font-mono font-medium border border-stone-300 dark:border-stone-700 hover:bg-stone-200 dark:hover:bg-stone-800 text-stone-700 dark:text-stone-300 transition-colors">
             Copy Link
           </button>
         </div>
       </div>
 
-      <div class="border-t border-stone-200 dark:border-stone-800 pt-8 mt-8 flex items-center justify-between">
-        <div class="font-mono text-xs text-stone-500">
-          BUREAU ARCHIVE REF: ${article.slug.toUpperCase()}
+      <div class="border-t border-stone-200 dark:border-stone-800 pt-6 sm:pt-8 mt-6 sm:mt-8 flex items-center justify-between">
+        <div class="font-mono text-[10px] sm:text-xs text-stone-500 truncate max-w-[180px] sm:max-w-none">
+          REF: ${article.slug.toUpperCase()}
         </div>
-        <button onclick="closeReaderModal()" class="px-4 py-2 text-xs font-sans font-semibold uppercase tracking-wider bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 rounded-sm">
-          Close Reader
+        <button onclick="closeReaderModal()" class="px-5 py-2 text-xs font-mono font-bold uppercase tracking-wider bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 rounded-sm hover:opacity-90">
+          Close Reader ✕
         </button>
       </div>
     </div>
@@ -632,11 +663,11 @@ function openReaderModal(articleId) {
   document.body.style.overflow = 'hidden';
 }
 
-function copyArticleLink(slug) {
-  const url = window.location.origin + window.location.pathname + '#' + slug;
+function copyArticleDirectLink(slug) {
+  const url = window.location.origin + window.location.pathname + '?article=' + slug;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(url).then(() => {
-      showToast('Article link copied to clipboard!');
+      showToast('Article direct link copied to clipboard!');
     }).catch(() => {
       prompt('Copy article link:', url);
     });
@@ -650,6 +681,10 @@ function closeReaderModal() {
   if (modal) modal.classList.add('hidden');
   document.body.style.overflow = '';
   stopArticleAudio();
+
+  // Reset URL to base
+  window.history.pushState({}, 'NAIJA CHRONICLES', window.location.pathname);
+  document.title = 'NAIJA CHRONICLES — Journal of Nigerian Politics, Wealth & Contemporary Thought';
 }
 
 // Narration Player (Web Speech API)
