@@ -135,18 +135,21 @@ function normalizeImageUrl(rawUrl) {
     }
   }
 
-  // 3. Handle ImgBB viewer links (e.g. ibb.co/XYZ or ibb.co.com/XYZ)
-  // If it's a viewer link and not direct i.ibb.co CDN link
-  if ((url.includes('ibb.co/') || url.includes('ibb.co.com/')) && !url.includes('i.ibb.co')) {
-    // If user passed a link like https://ibb.co/68HxxB3, we inform/clean or keep safe
-    // Note: direct link starts with https://i.ibb.co/
-  }
-
-  // 4. Handle Google Drive view links (drive.google.com/file/d/ID/view)
-  if (url.includes('drive.google.com') && url.includes('/d/')) {
-    const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (idMatch && idMatch[1]) {
-      return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+  // 3. Handle Google Drive links (all variations: /file/d/, ?id=, /uc?, /open?)
+  if (url.includes('drive.google.com') || url.includes('docs.google.com') || url.includes('googleusercontent.com')) {
+    let fileId = '';
+    const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    
+    if (dMatch && dMatch[1]) {
+      fileId = dMatch[1];
+    } else if (idMatch && idMatch[1]) {
+      fileId = idMatch[1];
+    }
+    
+    if (fileId) {
+      // lh3.googleusercontent.com/d/ directly serves images and bypasses the 2MB virus scan HTML warning on drive.google.com/uc
+      return `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   }
 
@@ -365,7 +368,7 @@ function renderCommunityGrid() {
     <div class="group cursor-pointer flex flex-col justify-between p-5 border border-stone-200/80 dark:border-stone-800 rounded-sm bg-card hover:shadow-xl transition-all" onclick="openCommunityReader('${art.id}')">
       <div>
         <div class="image-editorial-frame aspect-[16/10] w-full rounded-sm mb-4 border border-stone-200/60 dark:border-stone-800">
-          <img src="${art.cover_image}" alt="${art.title}" class="w-full h-full object-cover" loading="lazy" />
+          <img src="${art.cover_image}" alt="${art.title}" class="w-full h-full object-cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85';" />
         </div>
         
         <div class="flex items-center justify-between text-xs font-mono mb-2">
@@ -526,7 +529,7 @@ function openCommunityReader(articleId) {
       </div>
 
       <div class="image-editorial-frame aspect-[16/9] w-full rounded-sm mb-4 sm:mb-6 border border-stone-200 dark:border-stone-800">
-        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85';" />
+        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85';" />
       </div>
 
       ${article.quote ? `<div class="editorial-quote my-4 sm:my-6 text-base sm:text-xl">${article.quote}</div>` : ''}

@@ -177,11 +177,21 @@ function normalizeImageUrl(rawUrl) {
     }
   }
 
-  // 3. Handle Google Drive view links (drive.google.com/file/d/ID/view)
-  if (url.includes('drive.google.com') && url.includes('/d/')) {
-    const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    if (idMatch && idMatch[1]) {
-      return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+  // 3. Handle Google Drive links (all variations: /file/d/, ?id=, /uc?, /open?)
+  if (url.includes('drive.google.com') || url.includes('docs.google.com') || url.includes('googleusercontent.com')) {
+    let fileId = '';
+    const dMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const idMatch = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    
+    if (dMatch && dMatch[1]) {
+      fileId = dMatch[1];
+    } else if (idMatch && idMatch[1]) {
+      fileId = idMatch[1];
+    }
+    
+    if (fileId) {
+      // lh3.googleusercontent.com/d/ directly serves images and bypasses the 2MB virus scan HTML warning on drive.google.com/uc
+      return `https://lh3.googleusercontent.com/d/${fileId}`;
     }
   }
 
@@ -296,7 +306,7 @@ function renderLeadStory() {
       </p>
 
       <div class="image-editorial-frame aspect-[16/9] lg:aspect-[21/9] w-full rounded-sm mb-4 border border-stone-200/80 dark:border-stone-800">
-        <img src="${lead.cover_image}" alt="${lead.title}" class="w-full h-full object-cover" loading="lazy" />
+        <img src="${lead.cover_image}" alt="${lead.title}" class="w-full h-full object-cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';" />
       </div>
 
       ${lead.image_caption ? `<p class="font-mono text-xs text-stone-500 dark:text-stone-400 mb-6 italic border-l-2 border-stone-300 dark:border-stone-700 pl-3">${lead.image_caption}</p>` : ''}
@@ -338,7 +348,7 @@ function renderFeaturedSecondary() {
     <div class="group cursor-pointer flex flex-col h-full justify-between" onclick="openReaderModal('${second.id}')">
       <div>
         <div class="image-editorial-frame aspect-[4/3] w-full rounded-sm mb-4 border border-stone-200 dark:border-stone-800">
-          <img src="${second.cover_image}" alt="${second.title}" class="w-full h-full object-cover" loading="lazy" />
+          <img src="${second.cover_image}" alt="${second.title}" class="w-full h-full object-cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';" />
         </div>
         <div class="flex items-center gap-2 mb-2">
           <span class="text-xs font-mono font-semibold uppercase tracking-wider text-red-700 dark:text-red-400">${second.tag || 'Deep Dive'}</span>
@@ -376,7 +386,7 @@ function renderEditorialColumns() {
       <div class="group cursor-pointer flex flex-col justify-between p-4 sm:p-5 border border-stone-200/80 dark:border-stone-800/80 rounded-sm bg-card hover:shadow-lg transition-all" onclick="openReaderModal('${art.id}')">
         <div>
           <div class="image-editorial-frame aspect-[16/10] w-full rounded-sm mb-4 border border-stone-200/50 dark:border-stone-800">
-            <img src="${art.cover_image}" alt="${art.title}" class="w-full h-full object-cover" loading="lazy" />
+            <img src="${art.cover_image}" alt="${art.title}" class="w-full h-full object-cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';" />
           </div>
           <div class="flex items-center justify-between text-xs font-mono mb-2 text-stone-500">
             <span class="font-bold text-neutral-900 dark:text-neutral-100 uppercase">${art.category}</span>
@@ -472,7 +482,7 @@ function renderVisualEssay() {
   container.innerHTML = `
     <div class="relative overflow-hidden rounded-sm bg-neutral-950 text-white p-8 sm:p-12 lg:p-16 cursor-pointer group" onclick="openReaderModal('${essay.id}')">
       <div class="absolute inset-0 z-0 opacity-40 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700">
-        <img src="${essay.cover_image}" alt="${essay.title}" class="w-full h-full object-cover" />
+        <img src="${essay.cover_image}" alt="${essay.title}" class="w-full h-full object-cover" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';" />
       </div>
       <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10"></div>
 
@@ -612,7 +622,7 @@ function openReaderModal(articleId) {
       </div>
 
       <div class="image-editorial-frame aspect-[16/9] w-full rounded-sm mb-3 sm:mb-4 border border-stone-200 dark:border-stone-800">
-        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';" />
+        <img src="${article.cover_image}" alt="${article.title}" class="w-full h-full object-cover" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';" />
       </div>
       ${article.image_caption ? `<p class="font-mono text-[11px] text-stone-500 dark:text-stone-400 mb-6 sm:mb-8 italic">${article.image_caption}</p>` : ''}
 
