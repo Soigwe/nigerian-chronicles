@@ -20,11 +20,11 @@ SSH_KEY = "/workspace/.ssh/id_ed25519"
 # Curated High-Relevance Nigerian Editorial Photo Bank
 AUTHENTIC_TOPIC_IMAGES = {
     "politics_national_assembly": {
-        "url": "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85",
+        "url": "https://lh3.googleusercontent.com/d/1EFlpO3_MSl7OsXrpEYvCo7EWylXKRWdD",
         "caption": "The National Assembly complex in Abuja during legislative policy debates."
     },
     "politics_tax_reforms": {
-        "url": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://lh3.googleusercontent.com/d/1hHpzsga4u85vgF-KFmZQm64sqNRrqEYy",
         "caption": "Fiscal policy and tax reform legislative draft documents in Abuja."
     },
     "dangote_refinery": {
@@ -44,7 +44,7 @@ AUTHENTIC_TOPIC_IMAGES = {
         "caption": "Artisanal lithium and solid mineral excavation site in Central Nigeria."
     },
     "global_passports_mobility": {
-        "url": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=85",
+        "url": "https://lh3.googleusercontent.com/d/1k9CTtLncdSrSTviDV6f_5pY6Gn5jjMND",
         "caption": "International travel transit terminal and biometric passport documentation."
     },
     "datacenter_localisation": {
@@ -130,9 +130,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 1. GUARANTEED FRONT PAGE LEAD: NIGERIAN POLITICS & GOVERNANCE
     # =========================================================================
     art_lead_politics = {
-        "id": f"art-politics-lead-{dt_tag}",
+        "id": f"art-politics-lead-canonical",
         "title": "The 2027 Coalition Arithmetic: Why Subsidies, Local Govt Autonomy, and State Caucuses Are Heating Up Abuja",
-        "slug": f"2027-coalition-arithmetic-subsidies-lg-autonomy-abuja-{dt_tag}",
+        "slug": f"2027-coalition-arithmetic-subsidies-lg-autonomy-abuja",
         "dek": "With INEC initiating early logistical frameworks and fuel subsidy debates returning to the political centerstage, governors, party caucuses, and opposition alliances are already drafting high-stakes concessions.",
         "category": "Politics & Governance",
         "tag": "Cover Story",
@@ -180,9 +180,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 2. POLITICS DEEP DIVE: STATE GOVERNANCE & TAX REFORM BILLS
     # =========================================================================
     art_tax_reforms = {
-        "id": f"art-politics-tax-{dt_tag}",
+        "id": "art-politics-tax-canonical",
         "title": "The National Tax Reform Debate: What the Proposed VAT and Fiscal Equalization Bills Mean for States",
-        "slug": f"national-tax-reform-debate-vat-fiscal-equalization-states-{dt_tag}",
+        "slug": "national-tax-reform-debate-vat-fiscal-equalization-states",
         "dek": "Inside the contentious legislative battle in the National Assembly over VAT derivation formulas, company income tax centralization, and state internally generated revenue (IGR).",
         "category": "Politics & Governance",
         "tag": "Policy Analysis",
@@ -221,9 +221,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 3. STOCKS & WEALTH: DANGOTE REFINERY IPO ANALYSIS
     # =========================================================================
     art_dangote_ipo = {
-        "id": f"art-stocks-dangote-{dt_tag}",
+        "id": "art-stocks-dangote-canonical",
         "title": "The Dangote Refinery IPO Truth: Wealth Multiplier or Retail Trap? What the Numbers Actually Say",
-        "slug": f"dangote-refinery-ipo-truth-wealth-multiplier-or-trap-{dt_tag}",
+        "slug": "dangote-refinery-ipo-truth-wealth-multiplier-or-trap",
         "dek": "Everyone from market traders to tech founders is hyping the upcoming Dangote Refinery public listing. Here is the unvarnished breakdown of the valuation, foreign debt obligations, and entry strategy.",
         "category": "Stocks & Money",
         "tag": "Trending Alpha",
@@ -270,9 +270,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 4. STOCKS & WEALTH: BANKING RECAPITALIZATION & OANDO
     # =========================================================================
     art_banking_recap = {
-        "id": f"art-stocks-banking-{dt_tag}",
+        "id": "art-stocks-banking-canonical",
         "title": "The NGX Banking Recapitalization Race: Which Tier-1 Banks Are Winning the Capital Inflow Battle?",
-        "slug": f"ngx-banking-recapitalization-race-tier-1-banks-capital-inflow-{dt_tag}",
+        "slug": "ngx-banking-recapitalization-race-tier-1-banks-capital-inflow",
         "dek": "As the CBN's ₦500 billion minimum capital requirement approaches, commercial banks are floating public offers, rights issues, and offshore bonds. We analyze Zenith, GTCO, Access, and UBA.",
         "category": "Stocks & Money",
         "tag": "Market Deep Dive",
@@ -312,9 +312,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 5. HIDDEN WIRE: SILENT ELECTRICITY & TELECOM TARIFFS
     # =========================================================================
     art_stealth_tariffs = {
-        "id": f"art-hidden-tariffs-{dt_tag}",
+        "id": "art-hidden-tariffs-canonical",
         "title": "The Stealth Tariff Shift: Why Your Light Token and Data Disappear Twice as Fast",
-        "slug": f"stealth-tariff-shift-why-tokens-and-data-vanish-faster-{dt_tag}",
+        "slug": "stealth-tariff-shift-why-tokens-and-data-vanish-faster",
         "dek": "No official press conference was called, but electricity distribution companies and telecom infrastructure costs have been quietly reclassified. Here is the truth behind your skyrocketing bills.",
         "category": "Hidden Wire",
         "tag": "Eye-Opener",
@@ -358,9 +358,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 6. HIDDEN WIRE: SOLID MINERALS & LITHIUM MINING CRACKDOWN
     # =========================================================================
     art_mining_crackdown = {
-        "id": f"art-hidden-mining-{dt_tag}",
+        "id": "art-hidden-mining-canonical",
         "title": "The Gold & Lithium Rush: Behind the Military Crackdowns and State Government Mining Suspensions in Niger & Zamfara",
-        "slug": f"gold-lithium-rush-military-crackdowns-mining-suspensions-niger-zamfara-{dt_tag}",
+        "slug": "gold-lithium-rush-military-crackdowns-mining-suspensions-niger-zamfara",
         "dek": "Solid mineral deposits are attracting international syndicates, triggering jurisdictional clashes between state governments and the Federal Ministry of Solid Minerals over licensing rights.",
         "category": "Hidden Wire",
         "tag": "Ground Investigation",
@@ -395,9 +395,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 7. GLOBAL MOBILITY & PASSPORTS PLAYBOOK
     # =========================================================================
     art_mobility = {
-        "id": f"art-mobility-passports-{dt_tag}",
+        "id": "art-mobility-passports-canonical",
         "title": "The 2026 Sovereign Backup: How Smart Nigerians Are Getting 2nd Passports & Residencies Under $5k",
-        "slug": f"2026-sovereign-backup-second-passports-residencies-under-5k-{dt_tag}",
+        "slug": "2026-sovereign-backup-second-passports-residencies-under-5k",
         "dek": "With visa appointment slots at embassies in Lagos booked into 2027 and master's degree routes restricted, here are the real, low-friction residency alternatives nobody is sharing.",
         "category": "Passports & Mobility",
         "tag": "Actionable Alpha",
@@ -443,9 +443,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 8. TECHNOLOGY & STARTUPS: DATACENTER INFRASTRUCTURE
     # =========================================================================
     art_tech_dataloc = {
-        "id": f"art-tech-datalocalisation-{dt_tag}",
+        "id": "art-tech-datalocalisation-canonical",
         "title": "The Data Localisation Deadline: Why Nigerian Fintechs & Banks Are Scrambling for Local Tier-4 Server Capacity",
-        "slug": f"data-localisation-deadline-nigerian-fintechs-banks-scrambling-tier-4-capacity-{dt_tag}",
+        "slug": "data-localisation-deadline-nigerian-fintechs-banks-scrambling-tier-4-capacity",
         "dek": "Regulatory mandates requiring primary citizen financial data to reside within sovereign Nigerian servers are triggering a massive datacenter construction boom in Lagos.",
         "category": "Technology & Startups",
         "tag": "Tech Infrastructure",
@@ -481,9 +481,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 9. TECHNOLOGY: NATIVE AFRICAN AI TOKENIZERS
     # =========================================================================
     art_tech_ai = {
-        "id": f"art-tech-african-ai-{dt_tag}",
+        "id": "art-tech-african-ai-canonical",
         "title": "Beyond English: How Nigerian AI Engineers Are Building Native Yoruba, Hausa & Igbo Language Models",
-        "slug": f"beyond-english-nigerian-ai-native-yoruba-hausa-igbo-models-{dt_tag}",
+        "slug": "beyond-english-nigerian-ai-native-yoruba-hausa-igbo-models",
         "dek": "Western LLMs waste 8x more computing tokens on African languages due to inefficient tokenizers. Local research hubs in Yaba are fixing the architectural gap.",
         "category": "Technology & Startups",
         "tag": "Frontier AI",
@@ -516,9 +516,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 10. WORLD & MACRO: US FED, OPEC & LAGOS GROCERY PRICES
     # =========================================================================
     art_world_macro = {
-        "id": f"art-world-macro-{dt_tag}",
+        "id": "art-world-macro-canonical",
         "title": "Why Decisions Made in Washington & Vienna Decide the Price of Groceries in Lagos",
-        "slug": f"why-washington-vienna-decisions-decide-lagos-grocery-prices-{dt_tag}",
+        "slug": "why-washington-vienna-decisions-decide-lagos-grocery-prices",
         "dek": "Connecting the dots simply: How the US Federal Reserve rate cuts and OPEC oil quotas directly control the Naira exchange rate and the cost of food on your table.",
         "category": "World & Macro",
         "tag": "Macro Simplified",
@@ -559,9 +559,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 11. CULTURE & ENTERTAINMENT: NOLLYWOOD BOX OFFICE
     # =========================================================================
     art_culture_nollywood = {
-        "id": f"art-culture-nollywood-{dt_tag}",
+        "id": "art-culture-nollywood-canonical",
         "title": "The $100M Box Office Frontier: How Nollywood Studios Are Monetizing Diaspora Theatrical Distribution",
-        "slug": f"100m-box-office-frontier-nollywood-studios-diaspora-distribution-{dt_tag}",
+        "slug": "100m-box-office-frontier-nollywood-studios-diaspora-distribution",
         "dek": "Nigerian cinema is no longer just selling digital streaming licenses; top producers are renting out major multiplex chains across London, Atlanta, and Houston to record-breaking ticket sales.",
         "category": "Culture & Entertainment",
         "tag": "Creative Economy",
@@ -594,9 +594,9 @@ def generate_curated_editorial_magazine(rss_items):
     # 12. MARITIME & TRADE: LEKKI DEEP SEA PORT SURGE
     # =========================================================================
     art_maritime_lekki = {
-        "id": f"art-maritime-lekki-{dt_tag}",
+        "id": "art-maritime-lekki-canonical",
         "title": "The Atlantic Maritime Boom: Lekki Port Records 35% Surge as Shipping Conglomerates Reroute",
-        "slug": f"atlantic-maritime-boom-lekki-port-surge-shipping-reroute-{dt_tag}",
+        "slug": "atlantic-maritime-boom-lekki-port-surge-shipping-reroute",
         "dek": "Automated container terminals and seamless transshipment protocols are turning the Gulf of Guinea into a direct deepwater hub for West African regional cargo.",
         "category": "Global Economy",
         "tag": "Trade Dispatches",
@@ -647,19 +647,50 @@ def sync_to_supabase_if_configured(articles):
     if not supabase_url or not supabase_key:
         return False
         
+    headers = {
+        "apikey": supabase_key,
+        "Authorization": f"Bearer {supabase_key}",
+        "Content-Type": "application/json"
+    }
+
+    # Fetch existing DB images to preserve user customizations
+    existing_images = {}
+    try:
+        req = urllib.request.Request(f"{supabase_url.rstrip('/')}/rest/v1/articles?select=slug,cover_image,author_avatar", headers=headers)
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            db_articles = json.loads(resp.read().decode("utf-8"))
+            for da in db_articles:
+                existing_images[da["slug"]] = {
+                    "cover_image": da.get("cover_image"),
+                    "author_avatar": da.get("author_avatar")
+                }
+    except Exception as e:
+        print(f"      Notice reading DB images: {e}", file=sys.stderr)
+
     synced_count = 0
     for a in articles:
+        # If user set a custom image in Supabase, preserve it
+        user_img = existing_images.get(a["slug"], {}).get("cover_image")
+        user_avatar = existing_images.get(a["slug"], {}).get("author_avatar")
+        
+        final_cover = user_img if (user_img and ("googleusercontent.com" in user_img or "drive.google.com" in user_img or "ibb.co" in user_img)) else a["cover_image"]
+        final_avatar = user_avatar if user_avatar else a["author"]["avatar"]
+
+        author_name = a.get("author", {}).get("name") if isinstance(a.get("author"), dict) else a.get("author_name", "Editorial Desk")
+        author_role = a.get("author", {}).get("role") if isinstance(a.get("author"), dict) else a.get("author_role", "Staff Writer")
+        author_avatar = a.get("author", {}).get("avatar") if isinstance(a.get("author"), dict) else a.get("author_avatar", "")
+
         data = {
             "title": a["title"],
             "slug": a["slug"],
             "dek": a["dek"],
             "category": a["category"],
             "tag": a.get("tag", "Dispatch"),
-            "author_name": a["author"]["name"],
-            "author_role": a["author"]["role"],
-            "author_avatar": a["author"]["avatar"],
+            "author_name": author_name,
+            "author_role": author_role,
+            "author_avatar": final_avatar or author_avatar,
             "read_time": a["read_time"],
-            "cover_image": a["cover_image"],
+            "cover_image": final_cover,
             "image_caption": a.get("image_caption", ""),
             "featured": a.get("featured", False),
             "lead_story": a.get("lead_story", False),
@@ -668,7 +699,7 @@ def sync_to_supabase_if_configured(articles):
         }
         
         endpoint = f"{supabase_url.rstrip('/')}/rest/v1/articles"
-        headers = {
+        insert_headers = {
             "apikey": supabase_key,
             "Authorization": f"Bearer {supabase_key}",
             "Content-Type": "application/json",
@@ -676,7 +707,7 @@ def sync_to_supabase_if_configured(articles):
         }
         
         try:
-            req = urllib.request.Request(endpoint, data=json.dumps(data).encode("utf-8"), headers=headers, method="POST")
+            req = urllib.request.Request(endpoint, data=json.dumps(data).encode("utf-8"), headers=insert_headers, method="POST")
             with urllib.request.urlopen(req, timeout=8) as resp:
                 if resp.status in (200, 201):
                     synced_count += 1
