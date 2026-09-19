@@ -807,6 +807,14 @@ def sync_and_save():
     except Exception as e:
         print(f"      Git push notice: {e}", file=sys.stderr)
 
+    print("[5/5] Dispatching Quora-Style Morning Newsletter to Email Subscribers...")
+    try:
+        newsletter_script = os.path.join(WORKSPACE_DIR, "scripts", "send_newsletter_digest.py")
+        if os.path.exists(newsletter_script):
+            os.system(f"python3 {newsletter_script}")
+    except Exception as e:
+        print(f"      Newsletter dispatch notice: {e}", file=sys.stderr)
+
     return all_active_articles
 
 if __name__ == "__main__":
