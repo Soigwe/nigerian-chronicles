@@ -91,6 +91,97 @@ async function loadCommunityArticles() {
   showCommunityLoading(false);
 }
 
+function normalizeImageUrl(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== 'string') {
+    return 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85';
+  }
+
+  let url = rawUrl.trim();
+
+  // 1. If user pasted HTML embed like <img src="..."> or <a href="...">
+  if (url.includes('<img') || url.includes('src=')) {
+    const srcMatch = url.match(/src=["'](.*?)["']/i);
+    if (srcMatch && srcMatch[1]) {
+      url = srcMatch[1];
+    }
+  }
+
+  // 2. If user pasted BBCode like [img]...[/img]
+  if (url.includes('[img]') && url.includes('[/img]')) {
+    const bbMatch = url.match(/\[img\](.*?)\[\/img\]/i);
+    if (bbMatch && bbMatch[1]) {
+      url = bbMatch[1];
+    }
+  }
+
+  // 3. Handle ImgBB viewer links (e.g. ibb.co/XYZ or ibb.co.com/XYZ)
+  // If it's a viewer link and not direct i.ibb.co CDN link
+  if ((url.includes('ibb.co/') || url.includes('ibb.co.com/')) && !url.includes('i.ibb.co')) {
+    // If user passed a link like https://ibb.co/68HxxB3, we inform/clean or keep safe
+    // Note: direct link starts with https://i.ibb.co/
+  }
+
+  // 4. Handle Google Drive view links (drive.google.com/file/d/ID/view)
+  if (url.includes('drive.google.com') && url.includes('/d/')) {
+    const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+    }
+  }
+
+  // 5. Handle Dropbox links (?dl=0 -> ?raw=1)
+  if (url.includes('dropbox.com')) {
+    return url.replace('dl=0', 'raw=1').replace('?dl=1', '?raw=1');
+  }
+
+  // 6. Handle Imgur page links (imgur.com/ID -> i.imgur.com/ID.jpg)
+  if (url.includes('imgur.com') && !url.includes('i.imgur.com')) {
+    const idMatch = url.match(/imgur\.com\/([a-zA-Z0-9]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://i.imgur.com/${idMatch[1]}.jpg`;
+    }
+  }
+
+  return url;
+}
+
+function previewCommunityImage(rawUrl) {
+  const container = document.getElementById('image-preview-container');
+  const imgEl = document.getElementById('image-preview-element');
+  const statusEl = document.getElementById('image-preview-status');
+  if (!container || !imgEl) return;
+
+  const cleanUrl = normalizeImageUrl(rawUrl);
+
+  if (!rawUrl.trim()) {
+    container.classList.add('hidden');
+    return;
+  }
+
+  container.classList.remove('hidden');
+  imgEl.src = cleanUrl;
+
+  imgEl.onload = () => {
+    if (statusEl) {
+      statusEl.textContent = '✓ Image Loaded Successfully';
+      statusEl.className = 'text-emerald-600 font-bold';
+    }
+  };
+
+  imgEl.onerror = () => {
+    if (statusEl) {
+      if (rawUrl.includes('ibb.co') && !rawUrl.includes('i.ibb.co')) {
+        statusEl.textContent = '⚠️ ImgBB Viewer Link Detected. Please copy the "Direct Link" (starts with https://i.ibb.co/...)';
+        statusEl.className = 'text-amber-600 font-bold';
+      } else {
+        statusEl.textContent = '⚠️ Could not load image from this URL. Using fallback.';
+        statusEl.className = 'text-amber-600 font-bold';
+      }
+    }
+    imgEl.src = 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85';
+  };
+}
+
 function normalizeCommunityArticle(item) {
   return {
     id: item.id || `comm-${Date.now()}`,
@@ -106,7 +197,7 @@ function normalizeCommunityArticle(item) {
     },
     published_at: item.published_at || item.created_at || new Date().toISOString(),
     read_time: item.read_time || '4 min read',
-    cover_image: item.cover_image || 'https://images.unsplash.com/photo-1509391365360-2e959784a276?auto=format&fit=crop&w=1200&q=85',
+    cover_image: normalizeImageUrl(item.cover_image),
     image_caption: item.image_caption || '',
     quote: item.quote || '',
     content: item.content || ''

@@ -128,6 +128,53 @@ async function loadArticles() {
   showLoading(false);
 }
 
+function normalizeImageUrl(rawUrl) {
+  if (!rawUrl || typeof rawUrl !== 'string') {
+    return 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w=1200&q=85';
+  }
+
+  let url = rawUrl.trim();
+
+  // 1. If user pasted HTML embed like <img src="..."> or <a href="...">
+  if (url.includes('<img') || url.includes('src=')) {
+    const srcMatch = url.match(/src=["'](.*?)["']/i);
+    if (srcMatch && srcMatch[1]) {
+      url = srcMatch[1];
+    }
+  }
+
+  // 2. If user pasted BBCode like [img]...[/img]
+  if (url.includes('[img]') && url.includes('[/img]')) {
+    const bbMatch = url.match(/\[img\](.*?)\[\/img\]/i);
+    if (bbMatch && bbMatch[1]) {
+      url = bbMatch[1];
+    }
+  }
+
+  // 3. Handle Google Drive view links (drive.google.com/file/d/ID/view)
+  if (url.includes('drive.google.com') && url.includes('/d/')) {
+    const idMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://drive.google.com/uc?export=view&id=${idMatch[1]}`;
+    }
+  }
+
+  // 4. Handle Dropbox links (?dl=0 -> ?raw=1)
+  if (url.includes('dropbox.com')) {
+    return url.replace('dl=0', 'raw=1').replace('?dl=1', '?raw=1');
+  }
+
+  // 5. Handle Imgur page links (imgur.com/ID -> i.imgur.com/ID.jpg)
+  if (url.includes('imgur.com') && !url.includes('i.imgur.com')) {
+    const idMatch = url.match(/imgur\.com\/([a-zA-Z0-9]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://i.imgur.com/${idMatch[1]}.jpg`;
+    }
+  }
+
+  return url;
+}
+
 function normalizeArticleData(item) {
   return {
     id: item.id || `art-${Date.now()}`,
@@ -137,13 +184,13 @@ function normalizeArticleData(item) {
     category: item.category || 'General',
     tag: item.tag || 'Dispatch',
     author: typeof item.author === 'object' ? item.author : {
-      name: item.author_name || item.author || 'The Chronicle Desk',
+      name: item.author_name || item.author || 'The Naija Chronicles Desk',
       role: item.author_role || 'Staff Correspondent',
       avatar: item.author_avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'
     },
     published_at: item.published_at || item.created_at || new Date().toISOString(),
     read_time: item.read_time || '5 min read',
-    cover_image: item.cover_image || 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+    cover_image: normalizeImageUrl(item.cover_image),
     image_caption: item.image_caption || '',
     featured: Boolean(item.featured),
     lead_story: Boolean(item.lead_story),

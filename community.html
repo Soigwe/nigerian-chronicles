@@ -262,8 +262,31 @@
         </div>
 
         <div>
-          <label class="block text-xs font-mono uppercase tracking-wider text-stone-500 mb-1">Cover Image URL (Optional)</label>
-          <input name="cover_image" placeholder="https://images.unsplash.com/..." class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100" />
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-mono uppercase tracking-wider text-stone-500">Cover Image URL (ImgBB, Unsplash, etc.)</label>
+            <span class="text-[10px] font-mono text-stone-400">Direct link (i.ibb.co / .jpg / .png)</span>
+          </div>
+          <input 
+            id="community-cover-input" 
+            name="cover_image" 
+            placeholder="e.g. https://i.ibb.co/... or paste full ImgBB embed code" 
+            oninput="previewCommunityImage(this.value)"
+            class="w-full px-3.5 py-2 text-xs font-mono rounded border border-stone-300 dark:border-stone-700 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 focus:outline-none focus:border-red-600" 
+          />
+          <div class="mt-1 text-[11px] font-sans text-stone-500 dark:text-stone-400">
+            💡 <strong>Tip for ImgBB:</strong> On ImgBB, select <em>"Direct links"</em> (starts with <code>https://i.ibb.co/...</code>). If you paste the viewer link or full HTML embed, we automatically clean it for you.
+          </div>
+          
+          <!-- Live Visual Image Preview Box -->
+          <div id="image-preview-container" class="mt-3 hidden p-2.5 rounded border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-900/50">
+            <div class="text-[10px] font-mono uppercase tracking-wider text-stone-500 mb-1.5 flex items-center justify-between">
+              <span>Image Preview</span>
+              <span id="image-preview-status" class="text-emerald-600 font-bold">✓ Valid Image</span>
+            </div>
+            <div class="aspect-[16/9] w-full max-h-48 overflow-hidden rounded bg-stone-200 dark:bg-stone-800">
+              <img id="image-preview-element" src="" alt="Preview" class="w-full h-full object-cover" />
+            </div>
+          </div>
         </div>
 
         <div>
