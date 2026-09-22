@@ -434,6 +434,14 @@ def sync_and_save():
     except Exception as e:
         print(f"      Git push notice: {e}", file=sys.stderr)
 
+    print("[4/5] Synthesizing Tailored AI Editorial Imagery for Fresh News...")
+    try:
+        img_script = os.path.join(WORKSPACE_DIR, "scripts", "generate_article_images.py")
+        if os.path.exists(img_script):
+            os.system(f"python3 {img_script}")
+    except Exception as e:
+        print(f"      AI image synthesis notice: {e}", file=sys.stderr)
+
     print("[5/5] Dispatching Quora-Style Morning Newsletter to Email Subscribers...")
     try:
         newsletter_script = os.path.join(WORKSPACE_DIR, "scripts", "send_newsletter_digest.py")
