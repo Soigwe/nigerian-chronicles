@@ -89,7 +89,7 @@ async function loadCommunityArticles() {
         .order('created_at', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        communityState.articles = data.map(normalizeCommunityArticle);
+        communityState.articles = deduplicateCommunityArticles(data.map(normalizeCommunityArticle));
         showCommunityLoading(false);
         return;
       }
@@ -103,13 +103,27 @@ async function loadCommunityArticles() {
     const res = await fetch('assets/data/community_articles.json?_v=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
-      communityState.articles = data.map(normalizeCommunityArticle);
+      communityState.articles = deduplicateCommunityArticles(data.map(normalizeCommunityArticle));
     }
   } catch (err) {
     console.error('Failed to load local community articles:', err);
   }
 
   showCommunityLoading(false);
+}
+
+function deduplicateCommunityArticles(rawList) {
+  const seen = new Set();
+  const clean = [];
+  for (const item of rawList) {
+    if (!item || !item.title) continue;
+    const key = (item.title || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 35);
+    if (key && !seen.has(key)) {
+      seen.add(key);
+      clean.push(item);
+    }
+  }
+  return clean;
 }
 
 function normalizeImageUrl(rawUrl) {

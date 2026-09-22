@@ -130,8 +130,8 @@ async function loadArticles() {
         .order('published_at', { ascending: false });
 
       if (!error && data && data.length > 0) {
-        state.articles = data.map(normalizeArticleData);
-        showToast(`Loaded ${data.length} articles from Supabase`);
+        state.articles = deduplicateArticles(data.map(normalizeArticleData));
+        showToast(`Loaded ${state.articles.length} unique articles from Supabase`);
         showLoading(false);
         return;
       }
@@ -145,13 +145,33 @@ async function loadArticles() {
     const res = await fetch('assets/data/sample_articles.json?_v=' + Date.now(), { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
-      state.articles = data.map(normalizeArticleData);
+      state.articles = deduplicateArticles(data.map(normalizeArticleData));
     }
   } catch (err) {
     console.error('Failed to load local articles:', err);
   }
   
   showLoading(false);
+}
+
+function deduplicateArticles(rawList) {
+  const seenTitles = new Set();
+  const seenSlugs = new Set();
+  const clean = [];
+  
+  for (const item of rawList) {
+    if (!item || !item.title) continue;
+    // Normalize title: alphanumeric only, first 35 chars
+    const titleKey = item.title.toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 35);
+    const slugKey = (item.slug || '').toLowerCase().replace(/-[0-9]{8}$/, '').replace(/-canonical$/, '');
+
+    if (titleKey && !seenTitles.has(titleKey) && !seenSlugs.has(slugKey)) {
+      seenTitles.add(titleKey);
+      if (slugKey) seenSlugs.add(slugKey);
+      clean.push(item);
+    }
+  }
+  return clean;
 }
 
 function normalizeImageUrl(rawUrl) {
@@ -242,6 +262,10 @@ function normalizeArticleData(item) {
 // Render Master Controller
 function renderAll() {
   filterArticles();
+  
+  // Track rendered articles on the page to prevent ANY duplication
+  state.renderedIds = new Set();
+
   renderLeadStory();
   renderFeaturedSecondary();
   renderEditorialColumns();
@@ -290,6 +314,7 @@ function renderLeadStory() {
     return;
   }
 
+  state.renderedIds.add(lead.id);
   const isBookmarked = state.bookmarks.some(b => b.id === lead.id);
 
   container.innerHTML = `
@@ -342,11 +367,13 @@ function renderFeaturedSecondary() {
   const container = document.getElementById('featured-secondary-container');
   if (!container) return;
 
-  const second = state.filteredArticles.filter(a => !a.lead_story)[0];
+  const second = state.filteredArticles.find(a => !state.renderedIds.has(a.id));
   if (!second) {
     container.innerHTML = '';
     return;
   }
+
+  state.renderedIds.add(second.id);
 
   container.innerHTML = `
     <div class="group cursor-pointer flex flex-col h-full justify-between" onclick="openReaderModal('${second.id}')">
@@ -379,11 +406,13 @@ function renderEditorialColumns() {
   const container = document.getElementById('editorial-grid-container');
   if (!container) return;
 
-  const others = state.filteredArticles.filter(a => !a.lead_story).slice(1, 9);
+  const others = state.filteredArticles.filter(a => !state.renderedIds.has(a.id)).slice(0, 6);
   if (others.length === 0) {
     container.innerHTML = '';
     return;
   }
+
+  others.forEach(art => state.renderedIds.add(art.id));
 
   container.innerHTML = others.map(art => {
     return `
@@ -418,11 +447,11 @@ function renderWeeklyArchiveSection() {
   const container = document.getElementById('weekly-archive-grid');
   if (!container) return;
 
-  // Find articles from the past week (excluding today's top lead story)
-  const archiveItems = state.filteredArticles.filter(a => !a.lead_story);
+  // Render remaining distinct older articles
+  const archiveItems = state.filteredArticles.filter(a => !state.renderedIds.has(a.id));
   
   if (archiveItems.length === 0) {
-    container.innerHTML = `<div class="col-span-full py-8 text-center text-stone-500 font-sans text-xs">No older dispatches in this 7-day window.</div>`;
+    container.innerHTML = `<div class="col-span-full py-8 text-center text-stone-500 font-sans text-xs">All active weekly dispatches are featured in today's main grid.</div>`;
     return;
   }
 

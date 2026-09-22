@@ -350,14 +350,18 @@ def merge_with_weekly_retention(new_articles):
         except Exception:
             existing = []
 
+    seen_title_keys = set()
     articles_by_slug = {}
     
     # 1. Add today's fresh live articles (they take precedence)
     for a in new_articles:
-        a["is_fresh"] = True
-        articles_by_slug[a["slug"]] = a
+        t_key = re.sub(r'[^a-zA-Z0-9]', '', a.get('title', '').lower())[:35]
+        if t_key and t_key not in seen_title_keys:
+            seen_title_keys.add(t_key)
+            a["is_fresh"] = True
+            articles_by_slug[a["slug"]] = a
 
-    # 2. Add existing older articles (retaining for 7 days)
+    # 2. Add existing older articles (retaining for 7 days without duplicates)
     seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
     archive_list = []
 
@@ -369,8 +373,11 @@ def merge_with_weekly_retention(new_articles):
             archive_list = []
 
     for old_art in existing:
+        t_key = re.sub(r'[^a-zA-Z0-9]', '', old_art.get('title', '').lower())[:35]
         slug = old_art.get("slug")
-        if slug not in articles_by_slug:
+        
+        if t_key and t_key not in seen_title_keys:
+            seen_title_keys.add(t_key)
             pub_date_str = old_art.get("published_at", "")
             try:
                 pub_dt = datetime.fromisoformat(pub_date_str.replace("Z", "+00:00"))
